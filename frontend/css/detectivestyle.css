@@ -1,4 +1,12 @@
-body{
+body {
 	margin:0;
 	padding:0;
+}
+
+form#start-questionnairre label {
+	display:block;
+	margin:1ex;
+}
+form#start-questionnairre label input{
+	display:block;
 }
