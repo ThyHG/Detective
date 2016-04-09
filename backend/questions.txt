@@ -1,0 +1,98 @@
+What's your favourite color?
+My favourite color is :::answer:::.
+What's your favourite food?
+My favourite food is :::answer:::.
+Where are you from?
+I am from :::answer:::.
+Your favourite fruit?
+My favourite fruit is :::answer:::.
+Your favourite song?
+My favourite song is :::answer:::.
+Question 6
+My A to Q6 is :::answer:::.
+Question 7
+My A to Q7 is :::answer:::.
+Question 8
+My A to Q8 is :::answer:::.
+Question 9
+My A to Q9 is :::answer:::.
+Question 10
+My A to Q10 is :::answer:::.
+Question 11
+My A to Q11 is :::answer:::.
+Question 12
+My A to Q12 is :::answer:::.
+Question 13
+My A to Q13 is :::answer:::.
+Question 14
+My A to Q14 is :::answer:::.
+Question 15
+My A to Q15 is :::answer:::.
+Question 16
+My A to Q16 is :::answer:::.
+Question 17
+My A to Q17 is :::answer:::.
+Question 18
+My A to Q18 is :::answer:::.
+Question 19
+My A to Q19 is :::answer:::.
+Question 20
+My A to Q20 is :::answer:::.
+Question 21
+My A to Q21 is :::answer:::.
+Question 22
+My A to Q22 is :::answer:::.
+Question 23
+My A to Q23 is :::answer:::.
+Question 24
+My A to Q24 is :::answer:::.
+Question 25
+My A to Q25 is :::answer:::.
+Question 26
+My A to Q26 is :::answer:::.
+Question 27
+My A to Q27 is :::answer:::.
+Question 28
+My A to Q28 is :::answer:::.
+Question 29
+My A to Q29 is :::answer:::.
+Question 30
+My A to Q30 is :::answer:::.
+Question 31
+My A to Q31 is :::answer:::.
+Question 32
+My A to Q32 is :::answer:::.
+Question 33
+My A to Q33 is :::answer:::.
+Question 34
+My A to Q34 is :::answer:::.
+Question 35
+My A to Q35 is :::answer:::.
+Question 36
+My A to Q36 is :::answer:::.
+Question 37
+My A to Q37 is :::answer:::.
+Question 38
+My A to Q38 is :::answer:::.
+Question 39
+My A to Q39 is :::answer:::.
+Question 40
+My A to Q40 is :::answer:::.
+Question 41
+My A to Q41 is :::answer:::.
+Question 42
+My A to Q42 is :::answer:::.
+Question 43
+My A to Q43 is :::answer:::.
+Question 44
+My A to Q44 is :::answer:::.
+Question 45
+My A to Q45 is :::answer:::.
+Question 46
+My A to Q46 is :::answer:::.
+Question 47
+My A to Q47 is :::answer:::.
+Question 48
+My A to Q48 is :::answer:::.
+Question 49
+My A to Q49 is :::answer:::.
