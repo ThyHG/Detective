@@ -1,64 +1,112 @@
 <?php
 
-if(file_exists("on")){
-	//get from Jon
-	$id = 2;
+//set reply to json format
+header('Content-Type: application/json');
 
-	//read the question file
-	$file = "questions.txt";
-	$handle = fopen($file, "r");
-	$txt = fread($handle, filesize($file));
-	fclose($handle);
+//check if game is running
+//and if ID is being sent
+if(file_exists("on") && isset($_GET["id"]) ){
 
-	//questions and answers
-	$q_and_a = explode(PHP_EOL, $txt);
+	$id = $_GET["id"];
 
-	//questions for id
-	$customQ = [];
+	//if client has no data file = no questions generated yet
+	//OR if the client has NOT answered the questions yet        //ALSO, this means, refreshing the page gets them a new set of questions = FEATURE OFC
+	if( !file_exists("data/{$id}") || !hasAnswered($id) ){
 
-	//making sure questions aren't used twice
-	$uniques = [];
+		/* proceed with question generation + sending */
 
-	//fetch 5 random questions
-	while(sizeof($customQ) < 5){
+		//read the question file
+		$file = "questions.txt";
+		$handle = fopen($file, "r");
+		$txt = fread($handle, filesize($file));
+		fclose($handle);
 
-		//random number
-		$rand = rand(0, (sizeof($q_and_a)-1) );
+		//questions and answers
+		$q_and_a = explode(PHP_EOL, $txt);
 
-		//even numbers contain questions
-		if($rand % 2 == 0){
+		//questions for id
+		$customQ = [];
 
-			//check if unique
-			if(in_array($rand, $uniques)){
+		//making sure questions aren't used twice
+		$uniques = [];
 
-				//skip rest
-				continue;
+		//fetch 5 random questions
+		while(sizeof($customQ) < 5){
 
-			}
+			//random number
+			$rand = rand(0, (sizeof($q_and_a)-1) );
 
-			//question => answer
-			$customQ[$q_and_a[$rand]] = $q_and_a[$rand+1];
+			//even numbers contain questions
+			if($rand % 2 == 0){
 
-			//mark used
-			$uniques[] = $rand;
-		} 
+				//check if unique
+				if(in_array($rand, $uniques)){
+
+					//skip rest
+					continue;
+
+				}
+
+				//question => answer
+				$customQ[$q_and_a[$rand]] = $q_and_a[$rand+1];
+
+				//mark used
+				$uniques[] = $rand;
+			} 
+		}
+
+		//dump($customQ);
+
+		//TODO: update $id.. maybe
+
+		//write questions  (+ answer templates) to file named after id (pretty json-format)
+		$handle = fopen("data/{$id}", "w");
+		fwrite($handle, json_encode($customQ, JSON_PRETTY_PRINT) );
+		fclose($handle);
+
+		//return (only) questions to client
+		echo json_encode(array_keys($customQ));
+
+	} else{
+		//TODO: jon wat reply do you want
+		echo json_encode("DUDE CLIENT HAS ANSWERED IT ALREADY, REDIRECT HESHE PLZ");
 	}
+	//check if client has filled in answers, if yes, client is reconnecting
 
-	//dump($customQ);
+	//check if values have :::answer:::
 
-	//TODO: update $id.. maybe
-	$handle = fopen("data/{$id}.txt", "w");
-	fwrite($handle, json_encode($customQ, JSON_PRETTY_PRINT) );
-	fclose($handle);
+	
 
-	//WRITE TO FILE JSONNNN WITH FILE NAME = ID OF CLIENT
 	//dump($j);
 
 	//get all values: array_values
 
 } else{
-	echo "game isn't running";
+	echo json_encode("game isn't running OR no id provided");
 }
+
+/**
+ * check if the client has answered the questions yet
+ * if no: client is reconnecting or w/e
+ *
+ * @return      true: has answered, false: has NOT answered
+ */
+function hasAnswered($id){
+	//if the file exists, check if they have been answered
+	$file = file_get_contents("data/{$id}");
+
+	//are placeholders left in the answer? = unanswered
+	if( strpos($file, ":::answer:::") === false ) {
+
+		return true;
+
+	} else{
+
+		return false;
+
+	}
+}
+
 
 function dump($array) {
 	echo "<pre>" . htmlentities(print_r($array, 1)) . "</pre>";

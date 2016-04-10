@@ -1,7 +1,5 @@
 <?php
 
-include("Game.php");
-
 //game status, true = running, false = offline
 $game_running = file_exists("on");
 
@@ -11,6 +9,7 @@ if(isset($_GET["start"])){
 
 		//create file to indicate game state
 		touch("on");
+		
 	} else{
 
 		echo "Game already running";
@@ -19,7 +18,13 @@ if(isset($_GET["start"])){
 	
 } elseif(isset($_GET["stop"]) && $game_running){
 	$game_running = false;
+
+	//delete "on" file
 	unlink("on");
+
+	//delete game data i.e. client questions
+	array_map("unlink", glob("data/*.*"));
+
 }
 /*
 if(isset($_GET["id"]) && $settings->status == "on"){
