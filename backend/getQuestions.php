@@ -57,8 +57,6 @@ if(file_exists("on") && isset($_GET["id"]) ){
 
 		//dump($customQ);
 
-		//TODO: update $id.. maybe
-
 		//write questions  (+ answer templates) to file named after id (pretty json-format)
 		$handle = fopen("data/{$id}", "w");
 		fwrite($handle, json_encode($customQ, JSON_PRETTY_PRINT) );
@@ -71,15 +69,6 @@ if(file_exists("on") && isset($_GET["id"]) ){
 		//TODO: jon wat reply do you want
 		echo json_encode("DUDE CLIENT HAS ANSWERED IT ALREADY, REDIRECT HESHE PLZ");
 	}
-	//check if client has filled in answers, if yes, client is reconnecting
-
-	//check if values have :::answer:::
-
-	
-
-	//dump($j);
-
-	//get all values: array_values
 
 } else{
 	echo json_encode("game isn't running OR no id provided");
