@@ -10,3 +10,15 @@ form#start-questionnairre label {
 form#start-questionnairre label input{
 	display:block;
 }
+
+div#loading {
+	display:none;
+}
+
+div.card {
+	height:20em;
+	width:10em;
+	background-color:#C5C;
+	display:inline-block;
+	margin:1ex;
+}
