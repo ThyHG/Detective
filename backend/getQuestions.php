@@ -1,5 +1,6 @@
 <?php
 
+
 //set reply to json format
 header('Content-Type: application/json');
 
@@ -63,7 +64,7 @@ if(file_exists("on") && isset($_GET["id"]) ){
 		fclose($handle);
 
 		//return (only) questions to client
-		echo json_encode(array_keys($customQ));
+		echo json_encode(array_keys($customQ), JSON_FORCE_OBJECT);
 
 	} else{
 		//TODO: jon wat reply do you want
