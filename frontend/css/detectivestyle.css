@@ -3,16 +3,17 @@ body {
 	padding:0;
 }
 
+form#start-questionnairre,
+div#loading {
+	display:none;
+}
+
 form#start-questionnairre label {
 	display:block;
 	margin:1ex;
 }
 form#start-questionnairre label input{
 	display:block;
-}
-
-div#loading {
-	display:none;
 }
 
 div.card {

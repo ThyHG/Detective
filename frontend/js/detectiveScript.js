@@ -27,7 +27,7 @@ var fake_cards = [
 			'a4': 'of course',
 			'a5': 'I feel like it\'s more of a thing rather than a thing thing but more over less than equal'
 		}
-	},
+	 },
 	{
 		'id': '3',
 		'answers': {
@@ -41,6 +41,31 @@ var fake_cards = [
 ];
 
 $(document).ready(function() {
+	$('#enter-id').on('click', function(event){
+		var id = $('input[name=code-insert]').val();
+		getQuestions(id);
+	})
+	
+});
+
+getQuestions = function(id) {
+	$('#input-code').hide();
+	$('#start-questionnairre').show();
+
+	// GET questions from server.
+	$.ajax({
+		type: 'GET',
+		url: '../backend/getQuestions.php?id=' + id,
+		dataType: 'json',
+		success: function (data) {
+			console.log(data)
+			//Override test data with actual data on success
+			fake_questionnairre = data;
+		}
+	}).fail( function (error) {
+		console.log('error', error.statusText, this.url)
+	})
+	// Create input DOM elements for each question.
 	for (var key in fake_questionnairre) {
 	    if (Object.prototype.hasOwnProperty.call(fake_questionnairre, key)) {
 	        var val = fake_questionnairre[key];
@@ -61,7 +86,7 @@ $(document).ready(function() {
 		$('#start-questionnairre').hide();
 		window.setTimeout(showCards, 1000)
 	})
-});
+}
 
 showCards = function() {
 	//Hide waiting screen
