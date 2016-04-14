@@ -39,7 +39,7 @@ var fake_cards = [
 		}
 	}
 ];
-
+//On ready, bind value field to generate ID.
 $(document).ready(function() {
 	$('#enter-id').on('click', function(event){
 		var id = $('input[name=code-insert]').val();
@@ -47,7 +47,7 @@ $(document).ready(function() {
 	})
 	
 });
-
+//Request questions from server, dynamically create questions, buttons and clickhandlers
 getQuestions = function(id) {
 	$('#input-code').hide();
 	$('#start-questionnairre').show();
@@ -75,20 +75,88 @@ getQuestions = function(id) {
 	// TODO change this into code thinger.
 	$('#start-questionnairre').append('<button id="submit-questionnairre" type="button">Submit</button>');
 
-	// Actions
+	// Action
 	// On submission of questionnairre
 	// TODO check field validation (everything filled in)
 	$('#submit-questionnairre').on('click', function(event) {
 		event.preventDefault();
-		// TODO Do ajax request
-		// SEND ID of person + answers
-		$('#loading').show();
-		$('#start-questionnairre').hide();
-		window.setTimeout(showCards, 1000)
+		sendAnswers(id);
+	})
+}
+//sendAnswers: sends the answers given in the questionnaire back to the server.
+sendAnswers = function(id) {
+	//placeholder object to send
+	var answersObject = {
+		id: id,
+		answers: {}
+	}
+	//gather all the datafields.
+	var answers = $('#start-questionnairre').serializeArray();
+	for(i=0; i<answers.length; i++) {
+		//transform serialized data into a readable object
+		answersObject.answers[i] = answers[i].value;
+	}
+
+	// SEND ID of person + answers
+	$.ajax({
+		type: 'POST',
+		url: '../backend/submitQ.php',
+		data: answersObject,
+		success: function(msg) {
+			console.log(msg)
+		}
+	}).fail( function (error) {
+		console.log('error', error)
+		//REMOVEME - fills in an extra card when no server connection.
+		fake_cards[fake_cards.length] = answersObject;
+		console.log(fake_cards)
+	});
+	//Loading screen!
+	$('#loading').show();
+	$('#start-questionnairre').hide();
+	//Check if game has started
+	gameStartCheck(id);
+};
+
+//periodically check if the game has launched,
+// if launched, get cards from server.
+// TODO call function every minute or so.
+gameStartCheck = function (id) {
+	$.ajax({
+	    url:'../backend/j.on',
+	    type:'HEAD',
+	    error: function()
+	    {
+	        //file not exists
+	        console.log('GAME NAWHT STARTED')
+	        window.setTimeout(showCards, 1000)
+	    },
+	    success: function()
+	    {
+	        //file exists
+	        console.log('Game started');
+	        getCards(id)
+	    }
+	});
+};
+//Get cards from server
+getCards = function(id) {
+	$.ajax({
+		type: 'GET',
+		url: '../backend/getCards.php?id=' + id,
+		dataType: 'json',
+		success: function(cards) {
+			console.log('cards: ' + cards);
+			showCards(cards);
+		},
+		error: function(error) {
+			console.log('error: ' + error);
+
+		}
 	})
 }
 
-showCards = function() {
+showCards = function(cards) {
 	//Hide waiting screen
 	$('#loading').hide();
 
@@ -126,8 +194,10 @@ showCards = function() {
 	        c.render(container, headrender);
 	    });
 	}
-	//Create the cards.
-	Card.renderCards(fake_cards, $("#cards"), true);
+	//Create the cards. -- REMOVEME -- fall back to fake cards when no server hooked up
+	var cardsToRender = cards ? cards : fake_cards;
+	console.log(cards, cardsToRender)
+	Card.renderCards(cardsToRender, $("#cards"), true);
 }
 
 /* 
