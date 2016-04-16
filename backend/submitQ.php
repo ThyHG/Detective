@@ -3,53 +3,47 @@
 //set reply to json format
 header('Content-Type: application/json');
 
-//getting id and answers
-$answers = ["answer1", "answer2", "answer3", "answer4", "answer5"];
-
-
 //check if the game is running
-if( file_exists("on") ){
-	
-	//
-	if( isset($_GET["id"])  && file_exists("data/{$id}") ){
+//if( file_exists("j.on") ){
+//if( isset($_POST["id"])  && isset($_POST["answers"]) && file_exists("data/{$id}") ){
 
-		$id = $_GET["id"];
+//check if data was sent
+if( isset($_POST["id"]) && isset($_POST["answers"]) ){ 
 
-		//read data file of client
-		$data = file_get_contents("data/{$id}");
+	$id = $_POST["id"];
+	$answers = $_POST["answers"];
 
-		//defining placeholder
-		$placeholder = ":::answer:::";
+	//read data file of client
+	$data = file_get_contents("data/{$id}");
 
-		//replacing each placeholder with the actual answer
-		for($i = 0; $i < sizeof($answers); $i++){
+	//defining placeholder
+	$placeholder = ":::answer:::";
 
-			//find placeholder position
-			$pos = strpos($data, $placeholder);
+	//replacing each placeholder with the actual answer
+	for($i = 0; $i < sizeof($answers); $i++){
 
-			//replace it
-			$data = substr_replace($data, $answers[$i], $pos, strlen($placeholder));
+		//find placeholder position
+		$pos = strpos($data, $placeholder);
 
-		}
+		//replace it
+		$data = substr_replace($data, $answers[$i], $pos, strlen($placeholder));
 
-		//dump($data);
-
-		//write changes to file
-		$handle = fopen("data/{$id}", "w");
-		fwrite($handle, $data);
-		fclose($handle);
-
-		//tell client about success
-		echo json_encode("positive msg blargh");	
-
-	} else{
-		echo json_encode("no id provided OR no data found, i.e. no questionnaire requested");
 	}
-	
+
+	//dump($data);
+
+	//write changes to file
+	$handle = fopen("data/{$id}", "w");
+	fwrite($handle, $data);
+	fclose($handle);
+
+	//tell client about success
+	echo json_encode("it goat saved");
 
 } else{
-	echo json_encode("game isn't running dude");
+	echo json_encode("no id provided OR no data found, i.e. no questionnaire requested");
 }
+	
 
 function dump($array) {
 	echo htmlentities(print_r($array, 1));
