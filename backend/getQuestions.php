@@ -1,17 +1,19 @@
 <?php
 
-
 //set reply to json format
 header('Content-Type: application/json');
 
-//check if game is running
-//and if ID is being sent
-if(file_exists("on") && isset($_GET["id"]) ){
+
+//if(file_exists("on") && isset($_GET["id"]) ){ //check if game is running
+
+//check if ID is being sent
+if( isset($_GET["id"]) ){
 
 	$id = $_GET["id"];
 
 	//if client has no data file = no questions generated yet
 	//OR if the client has NOT answered the questions yet        //ALSO, this means, refreshing the page gets them a new set of questions = FEATURE OFC
+
 	if( !file_exists("data/{$id}") || !hasAnswered($id) ){
 
 		/* proceed with question generation + sending */
@@ -25,46 +27,45 @@ if(file_exists("on") && isset($_GET["id"]) ){
 		//questions and answers
 		$q_and_a = explode(PHP_EOL, $txt);
 
-		//questions for id
+		//questions for requestor (id)
 		$customQ = [];
+		$index = 1;
 
-		//making sure questions aren't used twice
-		$uniques = [];
+		//data to write to file
+		$toFile = [];
 
 		//fetch 5 random questions
 		while(sizeof($customQ) < 5){
 
-			//random number
+			//random number between 0 and size of array
 			$rand = rand(0, (sizeof($q_and_a)-1) );
 
 			//even numbers contain questions
 			if($rand % 2 == 0){
 
-				//check if unique
-				if(in_array($rand, $uniques)){
+				//save q1 => question
+				$customQ["q".$index] = $q_and_a[$rand];
+				$index++;
 
-					//skip rest
-					continue;
+				//prepare data for data-file
+				$toFile[] = $q_and_a[$rand+1];
 
-				}
+				//remove from question pool to avoid duplicates
+				unset($q_and_a[$rand]);
+				unset($q_and_a[$rand+1]);
 
-				//question => answer
-				$customQ[$q_and_a[$rand]] = $q_and_a[$rand+1];
-
-				//mark used
-				$uniques[] = $rand;
+				//re-index array
+				$q_and_a = array_values($q_and_a);
 			} 
 		}
 
-		//dump($customQ);
-
-		//write questions  (+ answer templates) to file named after id (pretty json-format)
+		//write questions  (+ answer templates) to file named after id
 		$handle = fopen("data/{$id}", "w");
-		fwrite($handle, json_encode($customQ, JSON_PRETTY_PRINT) );
+		fwrite($handle, implode(PHP_EOL, $toFile) );
 		fclose($handle);
-
-		//return (only) questions to client
-		echo json_encode(array_keys($customQ), JSON_FORCE_OBJECT);
+		
+		//return questions to client
+		echo json_encode($customQ);
 
 	} else{
 		//TODO: jon wat reply do you want
@@ -72,7 +73,7 @@ if(file_exists("on") && isset($_GET["id"]) ){
 	}
 
 } else{
-	echo json_encode("game isn't running OR no id provided");
+	echo json_encode("no id provided");
 }
 
 /**
