@@ -1,4 +1,3 @@
-console.log('hello');
 var fake_questionnairre = {
 	'q1': 'Are you healthy?',
 	'q2': 'What is your favourite colour?',
@@ -62,25 +61,27 @@ getQuestions = function(id) {
 			//Override test data with actual data on success
 			fake_questionnairre = data;
 		}
-	}).fail( function (error) {
+	}).fail(function (error) {
 		console.log('error', error.statusText, this.url)
-	})
-	// Create input DOM elements for each question.
-	for (var key in fake_questionnairre) {
-	    if (Object.prototype.hasOwnProperty.call(fake_questionnairre, key)) {
-	        var val = fake_questionnairre[key];
-	        $('#start-questionnairre').append('<label>'+ val +'<input type="text" name="'+key+'"></label>')
-	    }
-	}
-	// TODO change this into code thinger.
-	$('#start-questionnairre').append('<button id="submit-questionnairre" type="button">Submit</button>');
+	}).always(function () {
+		//TODO: ONLY RENDER ON SUCCESS.
+		// Create input DOM elements for each question.
+		for (var key in fake_questionnairre) {
+		    if (Object.prototype.hasOwnProperty.call(fake_questionnairre, key)) {
+		        var val = fake_questionnairre[key];
+		        $('#start-questionnairre').append('<label>'+ val +'<input type="text" name="'+key+'"></label>')
+		    }
+		}
+		// submit button.
+		$('#start-questionnairre').append('<button id="submit-questionnairre" type="button">Submit</button>');
 
-	// Action
-	// On submission of questionnairre
-	// TODO check field validation (everything filled in)
-	$('#submit-questionnairre').on('click', function(event) {
-		event.preventDefault();
-		sendAnswers(id);
+		// Action
+		// On submission of questionnairre
+		// TODO check field validation (everything filled in)
+		$('#submit-questionnairre').on('click', function(event) {
+			event.preventDefault();
+			sendAnswers(id);
+		})
 	})
 }
 //sendAnswers: sends the answers given in the questionnaire back to the server.
@@ -123,7 +124,7 @@ sendAnswers = function(id) {
 // TODO call function every minute or so.
 gameStartCheck = function (id) {
 	$.ajax({
-	    url:'../backend/j.on',
+	    url:'../backend/on',
 	    type:'HEAD',
 	    error: function()
 	    {
@@ -176,6 +177,7 @@ showCards = function(cards) {
 	    	card.appendTo(container);
 	    	//Recursive call, the card needs to be filled with answers
 	    	Card.renderCards(this.data.answers, card, false);
+
 		} else {
 			//If answers
 		    var p = $("<p></p>", {
@@ -194,18 +196,33 @@ showCards = function(cards) {
 	        c.render(container, headrender);
 	    });
 	}
-	//Create the cards. -- REMOVEME -- fall back to fake cards when no server hooked up
+	//Create the cards. -- REMOVEME TODO -- currently falls back to fake cards when no server hooked up
 	var cardsToRender = cards ? cards : fake_cards;
 	console.log(cards, cardsToRender)
 	Card.renderCards(cardsToRender, $("#cards"), true);
+	bindCards();
 }
-
-/* 
-// 1. Get questionnairre from server
-	// a. fake question set and put into form
-// 2. Register request send questionnairre
-	// a. Submit -> send question answers + ID to server
-// 3. Waiting screen
-// 4. Start game, receive cards and display them
-//
-*/ 
+//Bind the click function on the button, checks value of input field with the ID of card.
+bindCards = function() {
+	var cards = $('.card');
+	for(i=0; i<cards.length; i++) {
+		var input = $('<input type="text" class="card-input">');
+        var button = $('<button class="card-button" type="button">Yes</button>');
+        button.on('click', function (event){
+        	console.log('click', $(this).siblings('.card-input').val(), $(this).parent('.card')[0].dataset.id);
+        	var inputValue = $(this).siblings('.card-input').val();
+        	var referenceValue = $(this).parent('.card')[0].dataset.id;
+        	if(inputValue === referenceValue){
+        		console.log('You\'re right!');
+        		$(this).parent('.card').css('background-color','grey');
+        		//TODO send score to server - blur card
+        	} else {
+        		console.log('wrong guess');
+        		$(this).parent('.card').css('background-color', 'red');
+        		//TODO make a sad face, lock the card for a minute?
+        	}
+        })
+        input.appendTo(cards[i]);
+        button.appendTo(cards[i]);
+	}
+}
