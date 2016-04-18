@@ -1,5 +1,12 @@
 <?php
 
+//create folder structure  if it doesn't exist
+if( !file_exists("data") ){
+    mkdir("data");
+    mkdir("data".DIRECTORY_SEPARATOR."facts");
+    mkdir("data".DIRECTORY_SEPARATOR."save");
+}
+
 //game status, true = running, false = offline
 $game_running = file_exists("j.on");
 
