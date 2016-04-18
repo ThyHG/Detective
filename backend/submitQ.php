@@ -14,7 +14,7 @@ if( isset($_POST["id"]) && isset($_POST["answers"]) ){
 	$answers = $_POST["answers"];
 
 	//read data file of client
-	$data = file_get_contents("data/{$id}");
+	$data = file_get_contents("data/facts/{$id}");
 
 	//defining placeholder
 	$placeholder = ":::answer:::";
@@ -33,7 +33,7 @@ if( isset($_POST["id"]) && isset($_POST["answers"]) ){
 	//dump($data);
 
 	//write changes to file
-	$handle = fopen("data/{$id}", "w");
+	$handle = fopen("data/facts/{$id}", "w");
 	fwrite($handle, $data);
 	fclose($handle);
 

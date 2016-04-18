@@ -3,7 +3,7 @@
 //game status, true = running, false = offline
 $game_running = file_exists("j.on");
 
-$player_count = count(glob("data/*"));
+$player_count = count(glob("data/facts/*"));
 
 //for msgs
 $notice = "";
@@ -30,8 +30,9 @@ if(isset($_GET["start"])){
 	//delete "on" file
 	unlink("j.on");
 
-	//delete game data i.e. client questions
-	array_map("unlink", glob("data/*"));
+	//delete game data i.e. client facts and associated cards
+	array_map("unlink", glob("data/facts/*"));
+	array_map("unlink", glob("data/save/*"));
 
 	$notice = "Game stopped!";
 }

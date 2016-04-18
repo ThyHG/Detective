@@ -14,7 +14,7 @@ if( isset($_GET["id"]) ){
 	//if client has no data file = no questions generated yet
 	//OR if the client has NOT answered the questions yet        //ALSO, this means, refreshing the page gets them a new set of questions = FEATURE OFC
 
-	if( !file_exists("data/{$id}") || !hasAnswered($id) ){
+	if( !file_exists("data/facts/{$id}") || !hasAnswered($id) ){
 
 		/* proceed with question generation + sending */
 
@@ -60,7 +60,7 @@ if( isset($_GET["id"]) ){
 		}
 
 		//write questions  (+ answer templates) to file named after id
-		$handle = fopen("data/{$id}", "w");
+		$handle = fopen("data/facts/{$id}", "w");
 		fwrite($handle, implode(PHP_EOL, $toFile) );
 		fclose($handle);
 		
@@ -84,7 +84,7 @@ if( isset($_GET["id"]) ){
  */
 function hasAnswered($id){
 	//if the file exists, check if they have been answered
-	$file = file_get_contents("data/{$id}");
+	$file = file_get_contents("data/facts/{$id}");
 
 	//are placeholders left in the answer? = unanswered
 	if( strpos($file, ":::answer:::") === false ) {
