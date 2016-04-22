@@ -68,9 +68,14 @@ function startScore(){
 	//data to write
 	$data = [];
 
-	//prepare data, {id: score}
+	//prepare data, [{id:" ", score:0}, {...}]
 	foreach($name_ids as $id){
-		$data[$id] = 0;
+		$temp = [];
+
+		$temp["id"] = $id;
+		$temp["score"] = 0;
+		
+		$data[] = $temp;
 	}
 
 	//write (intitial) score file with 0 scores each player

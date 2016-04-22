@@ -7,7 +7,7 @@
 </head>
 
 <body>
-	<table>
+	<table id="status">
 
 		<tr>
 			<td>Game status</td>
