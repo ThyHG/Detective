@@ -20,8 +20,15 @@ if( isset($_GET["id"]) ){
 		$json = json_decode($file);
 		
 		//update score
-		$json->{$id} += 1;
+		foreach($json as $ele){
+			if($ele->id == $id){
+				$ele->score += 1;
+				break;
+			}
+		}
 
+		//update score
+		//$json->{$id} += 1;
 		//dump($json);
 
 		//clear file
@@ -44,4 +51,7 @@ if( isset($_GET["id"]) ){
 	echo "herp no ID given";
 }
 
+function dump($array) {
+	echo "<pre>" . htmlentities(print_r($array, 1)) . "</pre>";
+}
 ?>

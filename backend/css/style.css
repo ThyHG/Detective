@@ -1,3 +1,7 @@
+*{
+	font-family: calibri;
+}
+
 a,
 a:hover{
 	color: orange;
@@ -5,9 +9,15 @@ a:hover{
 }
 
 table{
-	margin: 80px auto;
 	font-size: 1.4em;
-	font-family: calibri;
+}
+
+table#status{
+	margin: 80px auto;
+}
+
+table#scores{
+	margin: 0 auto;
 }
 
 table td{
@@ -28,5 +38,9 @@ table td{
 }
 
 #notice{
+	text-align: center;
+}
+
+h1{
 	text-align: center;
 }
