@@ -49,7 +49,7 @@ $(document).ready(function() {
 //Request questions from server, dynamically create questions, buttons and clickhandlers
 getQuestions = function(id) {
 	$('#input-code').hide();
-	$('#start-questionnairre').show();
+	$('#questionnaire-container').show();
 
 	// GET questions from server.
 	$.ajax({
@@ -69,11 +69,11 @@ getQuestions = function(id) {
 		for (var key in fake_questionnairre) {
 		    if (Object.prototype.hasOwnProperty.call(fake_questionnairre, key)) {
 		        var val = fake_questionnairre[key];
-		        $('#start-questionnairre').append('<label>'+ val +'<input type="text" name="'+key+'"></label>')
+		        $('#start-questionnairre').append('<label class="six offset-by-three columns">'+ val +'<input type="text" name="'+key+'" class="twelve columns"></label>')
 		    }
 		}
 		// submit button.
-		$('#start-questionnairre').append('<button id="submit-questionnairre" type="button">Submit</button>');
+		$('#start-questionnairre').append('<button id="submit-questionnairre" class="six offset-by-three columns button-primary" type="button">Submit</button>');
 
 		// Action
 		// On submission of questionnairre
@@ -114,7 +114,7 @@ sendAnswers = function(id) {
 	});
 	//Loading screen!
 	$('#loading').show();
-	$('#start-questionnairre').hide();
+	$('#questionnaire-container').hide();
 	//Check if game has started
 	gameStartCheck(id);
 };
@@ -160,7 +160,8 @@ getCards = function(id) {
 showCards = function(cards) {
 	//Hide waiting screen
 	$('#loading').hide();
-
+	$('#cards').show();
+	var amtcards = 1;
 	//New card instance (also used as 'subcards')
 	//Data is directly from the cards object from server
 	var Card = function(data) {
@@ -173,7 +174,8 @@ showCards = function(cards) {
 	Card.prototype.render = function(container, headrender) {
 		if(headrender){
 			//If new card
-	    	var card = $('<div data-id=' + this.data.id + ' class="card"></div>');
+	    	var card = $('<div data-id=' + this.data.id + ' class="twelve columns card"><h4 class="card-title">Person #'+ amtcards +'</h4></div>');
+	    	amtcards++;
 	    	card.appendTo(container);
 	    	//Recursive call, the card needs to be filled with answers
 	    	Card.renderCards(this.data.answers, card, false);
@@ -203,22 +205,24 @@ showCards = function(cards) {
 	bindCards();
 }
 //Bind the click function on the button, checks value of input field with the ID of card.
+// Jezus wtf is dit eigenlijk.
 bindCards = function() {
 	var cards = $('.card');
 	for(i=0; i<cards.length; i++) {
-		var input = $('<input type="text" class="card-input">');
-        var button = $('<button class="card-button" type="button">Yes</button>');
+		var input = $('<input type="text" placeholder="This persons\'s ID" class="card-input">');
+        var button = $('<button class="card-button button-primary" type="button">Check</button>');
         button.on('click', function (event){
-        	console.log('click', $(this).siblings('.card-input').val(), $(this).parent('.card')[0].dataset.id);
         	var inputValue = $(this).siblings('.card-input').val();
         	var referenceValue = $(this).parent('.card')[0].dataset.id;
         	if(inputValue === referenceValue){
         		console.log('You\'re right!');
-        		$(this).parent('.card').css('background-color','grey');
+        		// I hate myself
+        		$(this).siblings('h4').next().html('You found the correct person!').nextAll().css('display', 'none');
         		//TODO send score to server - blur card
         	} else {
         		console.log('wrong guess');
-        		$(this).parent('.card').css('background-color', 'red');
+        		//I hate myself
+        		$(this).prev('.card-input').val('').attr('placeholder', 'Wrong guess!').css('border', '1px solid red');
         		//TODO make a sad face, lock the card for a minute?
         	}
         })

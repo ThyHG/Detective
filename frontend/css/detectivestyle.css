@@ -1,25 +1,46 @@
-body {
-	margin:0;
-	padding:0;
-}
-
-form#start-questionnairre,
-div#loading {
+div#questionnaire-container,
+div#loading,
+div#cards {
 	display:none;
 }
 
-form#start-questionnairre label {
+/*form#start-questionnairre label {
 	display:block;
-	margin:1ex;
 }
 form#start-questionnairre label input{
 	display:block;
+}*/
+
+div#questionnaire-container h2,
+div#loading h2,
+div#cards h2{
+	text-align:center;
 }
 
+
 div.card {
-	height:20em;
+	text-align:center;
+	/*height:20em;
 	width:10em;
 	background-color:#C5C;
 	display:inline-block;
-	margin:1ex;
+	margin:1ex;*/
+	margin-bottom:2em;
+	padding:0.5ex;
+}
+
+div.card:nth-child(2n){
+	background-color:#CCC;
+	border-radius:1ex;
+}
+
+div.card h4{
+	border-bottom:1px solid #AAA;
+	font-weight:400;
+	padding:0.5ex;
+}
+
+.card-button{
+	border-top:1px solid #AAA;
+	margin-left:2%;
 }

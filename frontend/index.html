@@ -3,20 +3,35 @@
 <head>
 	<title>Detective</title>
   	<meta charset="utf-8"/>
+  	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,600' rel='stylesheet' type='text/css'>
+  	<link href="css/normalize.css" type="text/css" rel="stylesheet">
+  	<link href="css/skeleton.css" type="text/css" rel="stylesheet">
+
 	<link href="css/detectivestyle.css" type="text/css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
 	<script src="js/detectiveScript.js"></script>
 </head>
 <body>
-	<div id="input-code">
-		Please insert code, tack
-		<input type="text" name="code-insert">
-		<button type="button" id="enter-id">Enter</button>
+	<div id="input-code" class="container">
+		<div class="row">
+			<h2 class="twelve columns" id="input-code">
+			Please insert the code written on your paper:</h2>
+		</div>
+		<div class="row">
+			<input type="text" name="code-insert" class="five columns">
+			<button type="button" id="enter-id" class="three columns">Enter</button>
+		</div>
 	</div>
-	<form id="start-questionnairre">
-		<!-- Questions will be inserted here -->
-	</form>
-	<div id="loading">Wait for game start pls</div>
-	<div id="cards"></div>
+	<div id="questionnaire-container" class="container">
+		<h2 class="twelve columns">Please fill out these questions about yourself</h2>
+		<form id="start-questionnairre" class="">
+			<!-- Questions will be inserted here -->
+		</form>
+	</div>
+	<div id="loading" class="container"><h2>Please wait for the game to start</h2></div>
+	<div id="cards" class="container">
+		<h2>The personas for you to identify are</h2>
+		<!-- Cards will be inserted here -->
+	</div>
 </body>
 </html>
