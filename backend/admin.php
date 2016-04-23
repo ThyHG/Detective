@@ -54,9 +54,6 @@ if(isset($_GET["start"])){
 //front end
 include("admin_template.php");
 
-header("Refresh:7; url=admin.php");
-
-
 /**
  * reads current players and creates a score file
  */

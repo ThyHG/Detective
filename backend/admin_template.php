@@ -4,6 +4,7 @@
 <head>
 	<title>Admin Panel</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+	<meta http-equiv="refresh" content="7;URL='admin.php'">
 </head>
 
 <body>
