@@ -8,7 +8,7 @@ if( !file_exists("data") ){
 }
 
 //game status, true = running, false = offline
-$game_running = file_exists("j.on");
+$game_running = file_get_contents("j.on") == "online" ? true : false;
 
 $player_count = count(glob("data/facts/*"));
 
@@ -20,7 +20,7 @@ if(isset($_GET["start"])){
 	if(!$game_running){
 
 		//create file to indicate game state
-		touch("j.on");
+		file_put_contents("j.on", "online");
 
 		//create score file for future scoring
 		startScore();
@@ -38,7 +38,7 @@ if(isset($_GET["start"])){
 	$game_running = false;
 
 	//delete "on" file
-	unlink("j.on");
+	file_put_contents("j.on", "offline");
 
 	//delete game data i.e. client facts and associated cards
 	//facts: collected answers per ID - save: keeping track which IDs were used for xy ID already
