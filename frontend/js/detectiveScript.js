@@ -62,8 +62,16 @@ getQuestions = function(id, nick) {
 		dataType: 'json',
 		success: function (data) {
 			console.log(data)
-			//Override test data with actual data on success
-			fake_questionnairre = data;
+			if(typeof data === 'string') {
+				console.log('Game Must\'ve started', id);
+				gameStartCheck(id);
+					$('#loading').show();
+					$('#questionnaire-container').hide();
+			} else if (typeof data === 'object'){
+				console.log()
+				//Override test data with actual data on success
+				fake_questionnairre = data;
+			}
 		}
 	}).fail(function (error) {
 		console.log('error', error.statusText, this.url)
@@ -129,7 +137,7 @@ sendAnswers = function(id, nick) {
 // TODO call function every minute or so.
 gameStartCheck = function (id) {
 	$.ajax({
-	    url:'../backend/on',
+	    url:'../backend/j.on',
 	    type:'HEAD',
 	    error: function()
 	    {
@@ -223,7 +231,7 @@ bindCards = function() {
         	if(inputValue === referenceValue){
         		console.log('You\'re right!');
         		// I hate myself
-        		$(this).siblings('h4').next().html('Congratulations, You have found'+referenceName+'!').nextAll().css('display', 'none');
+        		$(this).siblings('h4').next().html('Congratulations, You have found '+referenceName+'!').nextAll().css('display', 'none');
         		//TODO send score to server - blur card
         	} else {
         		console.log('wrong guess');
