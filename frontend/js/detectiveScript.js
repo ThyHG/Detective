@@ -136,6 +136,7 @@ sendAnswers = function(id, nick) {
 // if launched, get cards from server.
 // TODO call function every minute or so.
 gameStartCheck = function (id) {
+	console.log('game start check', id)
 	$.ajax({
 	    type:'GET',
 	    url:'../backend/status.php',
@@ -146,17 +147,19 @@ gameStartCheck = function (id) {
 	    },
 	    success: function(string) {
 	        if(string === 'online') {
-	        	console.log('Game started');
-	        	getCards(id)
+	        	console.log('Game started', id);
+	        	getCards(id);
 	    	} else {
 	    		//try again latehurr.
-	    		window.setTimeout(gameStartCheck, 3000);
+	    		// window.setTimeout(function() { gameStartCheck(id) }, 3000);
+	    		window.setTimeout(gameStartCheck.bind(null, id), 4000);
 	    	}
 	    }
 	});
 };
 //Get cards from server
 getCards = function(id) {
+	console.log('getCards', id);
 	$.ajax({
 		type: 'GET',
 		url: '../backend/getCards.php?id=' + id,
