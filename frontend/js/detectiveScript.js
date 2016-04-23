@@ -63,12 +63,12 @@ getQuestions = function(id, nick) {
 		success: function (data) {
 			console.log(data)
 			if(typeof data === 'string') {
-				console.log('Game Must\'ve started', id);
+				console.log('User has filled in questions', id);
 				gameStartCheck(id);
-					$('#loading').show();
-					$('#questionnaire-container').hide();
+				$('#loading').show();
+				$('#questionnaire-container').hide();
 			} else if (typeof data === 'object'){
-				console.log()
+				console.log('User hasn\'t filled in questions')
 				//Override test data with actual data on success
 				fake_questionnairre = data;
 			}
@@ -137,19 +137,21 @@ sendAnswers = function(id, nick) {
 // TODO call function every minute or so.
 gameStartCheck = function (id) {
 	$.ajax({
-	    url:'../backend/j.on',
-	    type:'HEAD',
-	    error: function()
-	    {
+	    type:'GET',
+	    url:'../backend/status.php',
+	    error: function(error) {
 	        //file not exists
-	        console.log('GAME NAWHT STARTED')
-	        window.setTimeout(showCards, 1000)
+	        console.log('error', error);
+	        // window.setTimeout(showCards, 1000)
 	    },
-	    success: function()
-	    {
-	        //file exists
-	        console.log('Game started');
-	        getCards(id)
+	    success: function(string) {
+	        if(string === 'online') {
+	        	console.log('Game started');
+	        	getCards(id)
+	    	} else {
+	    		//try again latehurr.
+	    		window.setTimeout(gameStartCheck, 3000);
+	    	}
 	    }
 	});
 };
