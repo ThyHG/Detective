@@ -13,7 +13,8 @@ form#start-questionnairre label input{
 
 div#questionnaire-container h2,
 div#loading h2,
-div#cards h2{
+div#cards h2,
+div#input-code h2{
 	text-align:center;
 }
 

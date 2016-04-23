@@ -9,6 +9,7 @@ var fake_questionnairre = {
 var fake_cards = [
 	{
 		'id': '1',
+		'nick': 'Bob',
 		'answers': {
 			'a1': 'yes',
 			'a2': 'blue',
@@ -19,6 +20,7 @@ var fake_cards = [
 	},
 	{
 		'id': '2',
+		'nick': 'Aaron',
 		'answers': {
 			'a1': 'yes',
 			'a2': 'red',
@@ -29,6 +31,7 @@ var fake_cards = [
 	 },
 	{
 		'id': '3',
+		'nick': 'Shaniqua',
 		'answers': {
 			'a1': 'yes',
 			'a2': 'yellow',
@@ -42,12 +45,13 @@ var fake_cards = [
 $(document).ready(function() {
 	$('#enter-id').on('click', function(event){
 		var id = $('input[name=code-insert]').val();
-		getQuestions(id);
+		var nick = $('input[name=name-insert]').val();
+		getQuestions(id, nick);
 	})
 	
 });
 //Request questions from server, dynamically create questions, buttons and clickhandlers
-getQuestions = function(id) {
+getQuestions = function(id, nick) {
 	$('#input-code').hide();
 	$('#questionnaire-container').show();
 
@@ -80,15 +84,16 @@ getQuestions = function(id) {
 		// TODO check field validation (everything filled in)
 		$('#submit-questionnairre').on('click', function(event) {
 			event.preventDefault();
-			sendAnswers(id);
+			sendAnswers(id, nick);
 		})
 	})
 }
 //sendAnswers: sends the answers given in the questionnaire back to the server.
-sendAnswers = function(id) {
+sendAnswers = function(id, nick) {
 	//placeholder object to send
 	var answersObject = {
 		id: id,
+		nick: nick,
 		answers: {}
 	}
 	//gather all the datafields.
@@ -174,7 +179,7 @@ showCards = function(cards) {
 	Card.prototype.render = function(container, headrender) {
 		if(headrender){
 			//If new card
-	    	var card = $('<div data-id=' + this.data.id + ' class="twelve columns card"><h4 class="card-title">Person #'+ amtcards +'</h4></div>');
+	    	var card = $('<div data-id=' + this.data.id + ' data-nick="'+this.data.nick+'" class="twelve columns card"><h4 class="card-title">Person #'+ amtcards +'</h4></div>');
 	    	amtcards++;
 	    	card.appendTo(container);
 	    	//Recursive call, the card needs to be filled with answers
@@ -214,10 +219,11 @@ bindCards = function() {
         button.on('click', function (event){
         	var inputValue = $(this).siblings('.card-input').val();
         	var referenceValue = $(this).parent('.card')[0].dataset.id;
+        	var referenceName = $(this).parent('.card')[0].dataset.nick;
         	if(inputValue === referenceValue){
         		console.log('You\'re right!');
         		// I hate myself
-        		$(this).siblings('h4').next().html('You found the correct person!').nextAll().css('display', 'none');
+        		$(this).siblings('h4').next().html('Congratulations, You have found'+referenceName+'!').nextAll().css('display', 'none');
         		//TODO send score to server - blur card
         	} else {
         		console.log('wrong guess');
