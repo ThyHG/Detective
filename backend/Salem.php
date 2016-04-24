@@ -496,6 +496,7 @@ class Salem{
 				}
 
 				//prepare status for json
+				$stmt->execute();
 				$status = $stmt->fetch(PDO::FETCH_ASSOC)["status"];
 
 				//structuring json
