@@ -16,7 +16,8 @@ var fake_cards = [
 			'a3': 'it\'s pretty',
 			'a4': 'of course',
 			'a5': 'I feel like it\'s more of a thing rather than a thing thing but more over less than equal'
-		}
+		},
+		'status': 'unsolved'
 	},
 	{
 		'id': '2',
@@ -27,7 +28,8 @@ var fake_cards = [
 			'a3': 'it\'s pretty',
 			'a4': 'of course',
 			'a5': 'I feel like it\'s more of a thing rather than a thing thing but more over less than equal'
-		}
+		},
+		'status': 'solved'
 	 },
 	{
 		'id': '3',
@@ -38,7 +40,8 @@ var fake_cards = [
 			'a3': 'it\'s pretty',
 			'a4': 'of course',
 			'a5': 'I feel like it\'s more of a thing rather than a thing thing but more over less than equal'
-		}
+		},
+		'status': 'raar'
 	}
 ];
 //On ready, bind value field to generate ID.
@@ -98,6 +101,7 @@ getQuestions = function(id, nick) {
 }
 //sendAnswers: sends the answers given in the questionnaire back to the server.
 sendAnswers = function(id, nick) {
+
 	//placeholder object to send
 	var answersObject = {
 		id: id,
@@ -137,13 +141,17 @@ sendAnswers = function(id, nick) {
 // TODO call function every minute or so.
 gameStartCheck = function (id) {
 	console.log('game start check', id)
+	//I suck at planning.
+	$('#cards').data('id', id);
+	console.log($('#cards'));
 	$.ajax({
 	    type:'GET',
 	    url:'../backend/status.php',
 	    error: function(error) {
 	        //file not exists
 	        console.log('error', error);
-	        // window.setTimeout(showCards, 1000)
+	        //TODO REMOVE ME PLS
+	        window.setTimeout(showCards, 1000)
 	    },
 	    success: function(string) {
 	        if(string === 'online') {
@@ -192,12 +200,18 @@ showCards = function(cards) {
 	Card.prototype.render = function(container, headrender) {
 		if(headrender){
 			//If new card
-	    	var card = $('<div data-id=' + this.data.id + ' data-nick="'+this.data.nick+'" class="twelve columns card"><h4 class="card-title">Person #'+ amtcards +'</h4></div>');
+	    	var card = $('<div data-id=' + this.data.id + ' data-solved="'+ this.data.status+'" data-nick="'+this.data.nick+'" class="twelve columns card"><h4 class="card-title">Person #'+ amtcards +'</h4></div>');
 	    	amtcards++;
 	    	card.appendTo(container);
-	    	//Recursive call, the card needs to be filled with answers
-	    	Card.renderCards(this.data.answers, card, false);
+			//If solved card
+			if(this.data.status === 'solved') {
+				//append success message
 
+	    	} else {
+	    		//If unsolved card
+		    	//Recursive call, the card needs to be filled with answers
+		    	Card.renderCards(this.data.answers, card, false);
+	    	}
 		} else {
 			//If answers
 		    var p = $("<p></p>", {
@@ -223,29 +237,48 @@ showCards = function(cards) {
 	bindCards();
 }
 //Bind the click function on the button, checks value of input field with the ID of card.
-// Jezus wtf is dit eigenlijk.
+// Jezus wtf is dit eigenlijk. Lrn 2 code pls.
 bindCards = function() {
 	var cards = $('.card');
 	for(i=0; i<cards.length; i++) {
-		var input = $('<input type="text" placeholder="This persons\'s ID" class="card-input">');
-        var button = $('<button class="card-button button-primary" type="button">Check</button>');
-        button.on('click', function (event){
-        	var inputValue = $(this).siblings('.card-input').val();
-        	var referenceValue = $(this).parent('.card')[0].dataset.id;
-        	var referenceName = $(this).parent('.card')[0].dataset.nick;
-        	if(inputValue === referenceValue){
-        		console.log('You\'re right!');
-        		// I hate myself
-        		$(this).siblings('h4').next().html('Congratulations, You have found '+referenceName+'!').nextAll().css('display', 'none');
-        		//TODO send score to server - blur card
-        	} else {
-        		console.log('wrong guess');
-        		//I hate myself
-        		$(this).prev('.card-input').val('').attr('placeholder', 'Wrong guess!').css('border', '1px solid red');
-        		//TODO make a sad face, lock the card for a minute?
-        	}
-        })
-        input.appendTo(cards[i]);
-        button.appendTo(cards[i]);
+		//If the card is solved, don't render the answers
+		if($(cards[i]).data('solved') !== 'solved'){
+			var input = $('<input type="text" placeholder="This persons\'s ID" class="card-input">');
+	        var button = $('<button class="card-button button-primary" type="button">Check</button>');
+	        button.on('click', function (event){
+	        	var inputValue = $(this).siblings('.card-input').val();
+	        	var referenceValue = $(this).parent('.card')[0].dataset.id;
+	        	var referenceName = $(this).parent('.card')[0].dataset.nick;
+	        	if(inputValue === referenceValue){
+	        		console.log('You\'re right!');
+	        		// I hate myself
+	        		$(this).siblings('h4').next().html('Congratulations, You have found '+referenceName+'!').nextAll().css('display', 'none');
+	        		//TODO send score to server - blur card
+	        		var thisID = $('#cards').data('id');
+	        		console.log(thisID);
+	        		$.ajax({
+						type: 'POST',
+						url: '../backend/score.php?id='+thisID+'&t_id='+referenceValue,
+						success: function(msg) {
+							console.log(msg)
+						}
+					}).fail( function (error) {
+						console.log('error', error, error.url)
+					});
+	        	} else {
+	        		console.log('wrong guess');
+	        		//I hate myself
+	        		$(this).prev('.card-input').val('').attr('placeholder', 'Wrong guess!').css('border', '1px solid red');
+	        		//TODO make a sad face, lock the card for a minute?
+	        	}
+	        })
+	        input.appendTo(cards[i]);
+	        button.appendTo(cards[i]);
+	    } else {
+	    	//Replace congratulatory text.
+        	var referenceName = $(cards[i]).data('nick');
+	    	var solvedText = $('<p>Congratulations, You have found '+ referenceName +'!</p>');
+	    	solvedText.appendTo(cards[i]);
+	    }
 	}
 }
