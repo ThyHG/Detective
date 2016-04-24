@@ -1,7 +1,5 @@
 <?php
 
-$t = file_get_contents("j.on");
-
-echo $t;
+echo json_decode( file_get_contents("server.json") )->status;
 
 ?>
