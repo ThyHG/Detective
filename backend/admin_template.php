@@ -1,11 +1,22 @@
 <html>
 <head>
 	<title>Admin Panel</title>
-	<link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,600' rel='stylesheet' type='text/css'>
+	<style>
+		*{ font-family: "open sans"; }
+		a{ color: #007396; text-decoration: none; font-weight: bold; }
+		table{ font-size: 1.4em; margin: 80px auto; }
+		table td{ padding-right: 20px; }
+		table th{ margin: 0px; padding: 0px;}
+		#offline{ color: #52614E; font-weight: bold; }
+		#online{ color: #70D60B; font-weight: bold; }
+		#notice{ text-align: center; }
+	</style>
 </head>
 
 <body>
-	<table id="status">
+	<table>
 
 		<tr>
 			<td>Game status</td>
@@ -25,11 +36,12 @@
 
 	</table>
 
-	<table id="status">
+	<table>
 		
 	    <tr>
-			<td colspan="2">Current settings</td>
+			<th>Current settings</th>
 		</tr>
+
 		<tr>
 			<td>Questions per player</td>
 			<td><?=$server->questions_per_player ?></td>

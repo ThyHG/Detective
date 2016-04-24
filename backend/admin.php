@@ -1,5 +1,7 @@
 <?php
 
+//header("Refresh:3; url=admin.php");
+
 require "Salem.php";
 
 //create folder structure  if it doesn't exist
@@ -78,7 +80,6 @@ if(isset($_GET["start"])){
 
 //front end
 include("admin_template.php");
-
 
 /*
  * for debugging
