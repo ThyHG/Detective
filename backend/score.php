@@ -1,54 +1,19 @@
 <?php
 
-//check if ID is being sent
-if( isset($_GET["id"]) ){
+require "Salem.php";
+$salem = new Salem();
+
+//check if ID is being sent (and target id = scanned person)
+if( isset($_GET["id"]) && isset($_GET["t_id"]) ){
 	
-	$id = "".$_GET["id"];
+	$id = $_GET["id"];
+	$t_id = $_GET["t_id"];
 
-	//file for locking
-	$file = "data/score.json";
-
-	//c mode = read, write without truncating file
-	$handle = fopen($file, "c+");
-
-	//lock the file to prevent simultanous access
-	if(flock($handle, LOCK_EX)){
-		
-		//read score file
-		$file = fread($handle, filesize($file));
-		rewind($handle);
-		$json = json_decode($file);
-		
-		//update score
-		foreach($json as $ele){
-			if($ele->id == $id){
-				$ele->score += 1;
-				break;
-			}
-		}
-
-		//update score
-		//$json->{$id} += 1;
-		//dump($json);
-
-		//clear file
-		ftruncate($handle, 0);
-
-		//write changes to file
-		fwrite($handle, json_encode($json, JSON_PRETTY_PRINT));
-		
-		//flush output (=writes changes now instead of buffering)
-		fflush($handle);
-
-		//unlock file
-		flock($handle, LOCK_UN);
-	} 
-
-	//close file handle
-	fclose($handle);
+	//update score
+	$salem->setScore($id, $t_id);
 
 } else{
-	echo "herp no ID given";
+	echo "missing id/s";
 }
 
 function dump($array) {

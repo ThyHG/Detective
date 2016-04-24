@@ -1,10 +1,7 @@
-<!doctype html>
-
 <html>
 <head>
 	<title>Admin Panel</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css"/>
-	<meta http-equiv="refresh" content="7;URL='admin.php'">
 </head>
 
 <body>
@@ -12,7 +9,7 @@
 
 		<tr>
 			<td>Game status</td>
-			<td id=<?=file_exists("j.on") ? "online" : "offline"; ?> ><?=file_exists("j.on") ? "online" : "offline"; ?></td>
+			<td id=<?=$game_running ? "online" : "offline"; ?> ><?=$game_running ? "online" : "offline"; ?></td>
 		</tr>
 		<tr>
 			<td>Players</td>
@@ -25,6 +22,29 @@
 		<tr>
 			<td colspan="2" id="notice"><?=$notice ?></td>
 		</tr>
+
+	</table>
+
+	<table id="status">
+		
+	    <tr>
+			<td colspan="2">Current settings</td>
+		</tr>
+		<tr>
+			<td>Questions per player</td>
+			<td><?=$server->questions_per_player ?></td>
+		</tr>
+		
+		<tr>
+			<td>Cards per player</td>
+			<td><?=$server->cards_per_player ?></td>
+		</tr>
+
+		<tr>
+			<td>Facts per card</td>
+			<td><?=$server->facts_per_card ?></td>
+		</tr>
+		
 	</table>
 
 </body>

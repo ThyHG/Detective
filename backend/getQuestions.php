@@ -3,18 +3,20 @@
 //set reply to json format
 header('Content-Type: application/json');
 
+require "Salem.php";
+$salem = new Salem();
 
-//if(file_exists("on") && isset($_GET["id"]) ){ //check if game is running
+//questions per player
+$qpp = json_decode( file_get_contents("server.json") )->questions_per_player; 
 
 //check if ID is being sent
 if( isset($_GET["id"]) ){
 
 	$id = $_GET["id"];
 
-	//if client has no data file = no questions generated yet
-	//OR if the client has NOT answered the questions yet        //ALSO, this means, refreshing the page gets them a new set of questions = FEATURE OFC
-
-	if( !file_exists("data/facts/{$id}") || !hasAnswered($id) ){
+	//check if the client has submitted answers yet
+	//client receives (new) questions as long as answers arent submitted
+	if( !hasAnswered($salem, $id) ){
 
 		/* proceed with question generation + sending */
 
@@ -32,10 +34,10 @@ if( isset($_GET["id"]) ){
 		$index = 1;
 
 		//data to write to file
-		$toFile = [];
-
-		//fetch 5 random questions
-		while(sizeof($customQ) < 5){
+		$toSave = [];
+		$i = 0;
+		//fetch x random questions
+		while(sizeof($customQ) < $qpp){
 
 			//random number between 0 and size of array
 			$rand = rand(0, (sizeof($q_and_a)-1) );
@@ -47,8 +49,8 @@ if( isset($_GET["id"]) ){
 				$customQ["q".$index] = $q_and_a[$rand];
 				$index++;
 
-				//prepare data for data-file
-				$toFile[] = $q_and_a[$rand+1];
+				//prepare data for db
+				$toSave[] = $q_and_a[$rand+1];
 
 				//remove from question pool to avoid duplicates
 				unset($q_and_a[$rand]);
@@ -56,25 +58,25 @@ if( isset($_GET["id"]) ){
 
 				//re-index array
 				$q_and_a = array_values($q_and_a);
-			} 
+			}
 		}
 
-		//write questions  (+ answer templates) to file named after id
-		$handle = fopen("data/facts/{$id}", "w");
-		fwrite($handle, implode(PHP_EOL, $toFile) );
-		fclose($handle);
-		
-		//return questions to client
+		//save facts (= answers with placeholders)
+		$salem->setFacts($id, $toSave);
+
+		//dump($toSave);
+
+		//send questions to client
 		echo json_encode($customQ);
 
 	} else{
-		//TODO: jon wat reply do you want
-		echo json_encode("DUDE CLIENT HAS ANSWERED IT ALREADY, REDIRECT HESHE PLZ");
+		echo json_encode("DUDE CLIENT HAS ANSWERED IT ALREADY");
 	}
 
 } else{
 	echo json_encode("no id provided");
 }
+
 
 /**
  * check if the client has answered the questions yet
@@ -82,19 +84,29 @@ if( isset($_GET["id"]) ){
  *
  * @return      true: has answered, false: has NOT answered
  */
-function hasAnswered($id){
-	//if the file exists, check if they have been answered
-	$file = file_get_contents("data/facts/{$id}");
+function hasAnswered($salem, $id){
+	
+	//fetch facts
+	$facts = $salem->getFacts($id);
 
-	//are placeholders left in the answer? = unanswered
-	if( strpos($file, ":::answer:::") === false ) {
-
-		return true;
-
-	} else{
+	//if no facts found = first time request = has not yet answered
+	if(count($facts) == 0){
 
 		return false;
 
+	} else{
+
+		//check if facts have a placeholder, checking 1 should be enough
+		if( strpos($facts[0], ":::answer:::") === false ){
+
+			//if none found = has answered
+			return true;
+
+		} else{
+
+			return false;
+
+		}
 	}
 }
 
