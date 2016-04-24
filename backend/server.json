@@ -1,0 +1,6 @@
+{
+    "status": "offline",
+    "questions_per_player": 5,
+    "cards_per_player": 2,
+    "facts_per_card": 2
+}
