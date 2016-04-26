@@ -257,23 +257,6 @@ class Salem{
 		}
 	}
 
-	// returns all nick
-	public function getNicks(){
-
-		try{
-			$sql = "SELECT client_id, nick FROM clients";			
-			$stmt = $this->db->prepare($sql);
-			$stmt->execute();
-
-			return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		} catch(PDOException $e) {
-			
-			echo $e->getMessage();
-
-		}
-	}
-
 	/**
 	 * checks if client with given id owns any cards
 	 *
@@ -541,7 +524,6 @@ class Salem{
 
 	}
 
-
 	/**
 	 *	checks if the client with the given id has unsolved cards
 	 *
@@ -598,7 +580,7 @@ class Salem{
 			$stmt->execute();
 
 			//count how many requests were made ()
-			$data["count"] = intval($this->getRequests($id));
+			$data["count"] = intval( $this->getRequests($id) );
 
 			//has unsolved? 1 = yes, 0 = false
 			$data["unsolved"] = $this->hasUnsolved($id) ? 1 : 0;
@@ -613,7 +595,7 @@ class Salem{
 	}
 
 	/**
-	 * get scores, order descending
+	 * get scores + nick, order descending
 	 * 
 	 * @return json		nick and its score
 	 */
@@ -645,14 +627,34 @@ class Salem{
 		$this->db->prepare("DELETE FROM facts")->execute();
 	}
 
-/* FUNCTIONS FOR TESTING PURPOSES */
+//////////////////////////////////
+//FUNCTIONS FOR TESTING PURPOSES//
+//////////////////////////////////
 
+/*
 	public function delete(){
 
 		try{
 			$sql = "DELETE FROM cards";			
 			$stmt = $this->db->prepare($sql);
 			$stmt->execute();
+
+		} catch(PDOException $e) {
+			
+			echo $e->getMessage();
+
+		}
+	}
+
+	// returns all nick
+	public function getNicks(){
+
+		try{
+			$sql = "SELECT client_id, nick FROM clients";			
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		} catch(PDOException $e) {
 			
@@ -681,6 +683,7 @@ class Salem{
 		}
 
 	}
+*/
 
 }
 
