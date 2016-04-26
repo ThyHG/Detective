@@ -16,7 +16,7 @@ if( isset($_GET["id"]) ){
 
 	//check if the client has submitted answers yet
 	//client receives (new) questions as long as answers arent submitted
-	if( !hasAnswered($salem, $id) ){
+	if( !$salem->hasAnswered($id) ){
 
 		/* proceed with question generation + sending */
 
@@ -76,40 +76,6 @@ if( isset($_GET["id"]) ){
 } else{
 	echo json_encode("no id provided");
 }
-
-
-/**
- * check if the client has answered the questions yet
- * if no: client is reconnecting or w/e
- *
- * @return      true: has answered, false: has NOT answered
- */
-function hasAnswered($salem, $id){
-	
-	//fetch facts
-	$facts = $salem->getFacts($id);
-
-	//if no facts found = first time request = has not yet answered
-	if(count($facts) == 0){
-
-		return false;
-
-	} else{
-
-		//check if facts have a placeholder, checking 1 should be enough
-		if( strpos($facts[0], ":::answer:::") === false ){
-
-			//if none found = has answered
-			return true;
-
-		} else{
-
-			return false;
-
-		}
-	}
-}
-
 
 function dump($array) {
 	echo "<pre>" . htmlentities(print_r($array, 1)) . "</pre>";

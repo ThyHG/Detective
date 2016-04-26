@@ -206,6 +206,41 @@ class Salem{
 	}
 
 	/**
+	 * check if client with given id has submitted answers yet
+	 * i.e. placeholders were replaced with actual answers
+	 *
+	 * @param $id			id of client to check
+	 *
+	 * @return boolean      true: has answered, false: has NOT answered
+	 */
+	function hasAnswered($id){
+		
+		//fetch facts
+		$facts = $this->getFacts($id);
+
+		//if no facts found = first time request = has not yet answered
+		if(count($facts) == 0){
+
+			return false;
+
+		} else{
+
+			//if facts have been made, check if they contain placeholders
+			if( strpos($facts[0], ":::answer:::") === false ){
+
+				//if none found = has answered
+				return true;
+
+			} else{
+
+				//if placeholder found = has not yet answered
+				return false;
+
+			}
+		}
+	}
+
+	/**
 	 * inserts id, associated nick and initialize score
 	 *
 	 * @param $id	id of client
