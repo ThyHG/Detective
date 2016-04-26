@@ -41,7 +41,7 @@ if( isset($_GET["id"]) ){
 	} else{
 
 		/* make new cards considering already existing ones */
-
+		
 		$cards = $salem->makeCards($id, $card_qty, $fact_qty, true);
 
 	}
