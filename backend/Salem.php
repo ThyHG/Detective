@@ -337,6 +337,11 @@ class Salem{
 			
 			$sql = "";
 
+			//if request limit has been reached, return old cards only
+			if( intval($this->getRequests) == 2){
+				return $this->getCards($id);
+			}
+
 			if($more){
 
 				//fetch ids of every other player except own
