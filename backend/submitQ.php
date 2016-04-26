@@ -13,10 +13,7 @@ if( isset($_POST["id"]) && isset($_POST["answers"]) ){
 	$answers = $_POST["answers"];
 	$nick = $_POST["nick"];
 
-	//defining placeholder
-	$placeholder = ":::answer:::";
-
-	//answers with placeholder
+	//set answers with placeholder
 	$salem->setFacts($id, NULL, true, $answers);
 
 	//insert nick+id into name table
