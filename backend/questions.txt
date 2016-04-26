@@ -1,98 +1,104 @@
-What's your favourite color?
-My favourite color is :::answer:::.
-What's your favourite food?
-My favourite food is :::answer:::.
-Where are you from?
-I am from :::answer:::.
-Your favourite fruit?
-My favourite fruit is :::answer:::.
-Your favourite song?
-My favourite song is :::answer:::.
-Question 6
-My A to Q6 is :::answer:::.
-Question 7
-My A to Q7 is :::answer:::.
-Question 8
-My A to Q8 is :::answer:::.
-Question 9
-My A to Q9 is :::answer:::.
-Question 10
-My A to Q10 is :::answer:::.
-Question 11
-My A to Q11 is :::answer:::.
-Question 12
-My A to Q12 is :::answer:::.
-Question 13
-My A to Q13 is :::answer:::.
-Question 14
-My A to Q14 is :::answer:::.
-Question 15
-My A to Q15 is :::answer:::.
-Question 16
-My A to Q16 is :::answer:::.
-Question 17
-My A to Q17 is :::answer:::.
-Question 18
-My A to Q18 is :::answer:::.
-Question 19
-My A to Q19 is :::answer:::.
-Question 20
-My A to Q20 is :::answer:::.
-Question 21
-My A to Q21 is :::answer:::.
-Question 22
-My A to Q22 is :::answer:::.
-Question 23
-My A to Q23 is :::answer:::.
-Question 24
-My A to Q24 is :::answer:::.
-Question 25
-My A to Q25 is :::answer:::.
-Question 26
-My A to Q26 is :::answer:::.
-Question 27
-My A to Q27 is :::answer:::.
-Question 28
-My A to Q28 is :::answer:::.
-Question 29
-My A to Q29 is :::answer:::.
-Question 30
-My A to Q30 is :::answer:::.
-Question 31
-My A to Q31 is :::answer:::.
-Question 32
-My A to Q32 is :::answer:::.
-Question 33
-My A to Q33 is :::answer:::.
-Question 34
-My A to Q34 is :::answer:::.
-Question 35
-My A to Q35 is :::answer:::.
-Question 36
-My A to Q36 is :::answer:::.
-Question 37
-My A to Q37 is :::answer:::.
-Question 38
-My A to Q38 is :::answer:::.
-Question 39
-My A to Q39 is :::answer:::.
-Question 40
-My A to Q40 is :::answer:::.
-Question 41
-My A to Q41 is :::answer:::.
-Question 42
-My A to Q42 is :::answer:::.
-Question 43
-My A to Q43 is :::answer:::.
-Question 44
-My A to Q44 is :::answer:::.
-Question 45
-My A to Q45 is :::answer:::.
-Question 46
-My A to Q46 is :::answer:::.
-Question 47
-My A to Q47 is :::answer:::.
-Question 48
-My A to Q48 is :::answer:::.
-Question 49
-My A to Q49 is :::answer:::.
+Who is your hero?
+This person’s hero is :::answer:::
+If you could live anywhere, where would it be?
+If this person could live anywhere, it would be in/at :::answer:::
+What is your biggest fear?
+This person’s biggest fear is :::answer:::
+What is your favorite family vacation?
+This person’s favorite family vacation is: :::answer:::
+What would you change about yourself if you could?
+If this person could, he/she would change this about him/herself: :::answer:::
+What really makes you angry?
+This person gets angry about :::answer:::
+What is your proudest accomplishment?
+This person’s favorite accomplishment is: :::answer:::
+What is your favorite book to read?
+This person’s favorite book is: :::answer:::
+What did you want to be when you were small?
+This person wanted to be :::answer::: when he/she was small.
+If you could choose to do anything for a day, what would it be?
+If this person could choose anything to do for a day, it would be :::answer:::
+What is your favorite game or sport to watch and play?
+This person’s favorite game or sport to watch and play is :::answer:::
+Which would you rather do: wash dishes, mow the lawn, clean the bathroom, or vacuum the house?
+Out of either washing dishes, mowing the lawn, cleaning the bathroom or vacuuming the house, this person would prefer: :::answer:::
+If you could hire someone to help you, would it be with cleaning, cooking, or yard work?
+If this person could hire someone to either help out with cleaning, cooking or yard work it would be: :::answer:::
+If you could only eat one meal for the rest of your life, what would it be?
+If this person had to choose ONE meal for the rest of his/her life it would be :::answer:::
+Who is your favorite author?
+This person’s favorite author is :::answer:::
+Would you rather vacation in Norway or Spain?
+Out of Norway or Spain, this person would rather go to :::answer:::
+If money was no object, what would you do all day?
+If money was no object, this person would do the following activity all day: :::answer:::
+If you could go back in time, what year would you travel to?
+If this person could go back in time, he/she would travel to :::answer:::
+Describe yourself in one word
+This person would describe him/herself in one word as :::answer:::
+What’s your favourite hobby?
+This person’s favourite hobby is :::answer:::
+What is the best gift you have been given?
+The best gift this person has received was :::answer:::
+What is the worst gift you have received?
+The worst gift this person has received was :::answer:::
+What object can’t you live without?
+This person cannot live without :::answer:::
+What is something you are scared of?
+This person is scared of :::answer:::
+If you could have superpowers, what would that be?
+If this person had superpowers, it would be :::answer:::
+What would you buy first if you won the lottery?
+If this person won the lottery, the first thing this person would buy would be :::answer:::
+What’s your favourite mean of transport?
+This person’s favourite mean of transport is :::answer:::
+What's your favorite animal?
+This person’s favourite animal is :::answer:::
+If you could have dinner with anyone in the world, who would that be?
+If this person could have dinner with anyone in the world, it would be with :::answer:::
+How many pillows do you sleep with?
+This person sleeps with :::answer::: pillows
+What's the longest period you've gone without sleep?
+The longest period this person has gone without sleep is :::answer:::
+What’s your favourite beverage/drink?
+This person’s favourite beverage/drink is :::answer:::
+What's your favorite holiday?
+This person’s favourite holiday is :::answer:::
+What was the last book you read?
+The last book I read was :::answer:::
+What's your favorite type of foreign food?
+This person’s favourite type of foreign food is :::answer:::
+If your life was a movie, what would the title be?
+If the person’s life was a movie, it would be called :::answer:::
+What’s your favourite fruit?
+This person’s favourite fruit is :::answer:::
+What's your favorite fast food chain?
+This person’s favourite fast food chain is :::answer:::
+What's your favorite movie?
+This person’s favourite movie is :::answer:::
+What’s your favourite food?
+This person’s favourite food is :::answer:::
+What type of food would you not eat?
+This person wouldn’t eat :::answer:::
+What item would you take with you on a deserted island?
+This person would bring :::answer::: on a deserted island
+What was your favourite subject in school?
+This person’s favourite subject in school was :::answer:::
+What's the most unusual thing you've ever eaten?
+The most unusual thing this person has eaten is :::answer:::
+What do you collect?
+This person collects :::answer:::
+If you had a country, what would you name it?
+If the person had a country, it would be named :::answer:::
+What is your favourite song?
+This person’s favourite song is :::answer:::
+What celebrity would you like to meet in person?
+This person would like to meet :::answer:::
+What’s your favourite band?
+This person’s favourite band is :::answer:::
+How many languages do you speak?
+The person speaks :::answer::: languages
+What is your favourite season?
+This person’s favourite season is :::answer:::
+If you could be an animal, which one would you like to be?
+If this person could be an animal, it would be :::answer:::
