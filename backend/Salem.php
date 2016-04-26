@@ -205,7 +205,6 @@ class Salem{
 		}
 	}
 
-
 	/**
 	 * inserts id, associated nick and initialize score
 	 *
@@ -267,20 +266,6 @@ class Salem{
 			$stmt->execute();
 
 			return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		} catch(PDOException $e) {
-			
-			echo $e->getMessage();
-
-		}
-	}
-
-	public function delete(){
-
-		try{
-			$sql = "DELETE FROM cards";			
-			$stmt = $this->db->prepare($sql);
-			$stmt->execute();
 
 		} catch(PDOException $e) {
 			
@@ -613,7 +598,7 @@ class Salem{
 			$stmt->execute();
 
 			//count how many requests were made ()
-			$data["count"] = $this->getRequests($id);
+			$data["count"] = intval($this->getRequests($id));
 
 			//has unsolved? 1 = yes, 0 = false
 			$data["unsolved"] = $this->hasUnsolved($id) ? 1 : 0;
@@ -651,10 +636,6 @@ class Salem{
 
 	}
 
-	public function trackRequest($id){
-
-	}
-
 	/**
 	 * deletes all data
 	 */
@@ -664,7 +645,22 @@ class Salem{
 		$this->db->prepare("DELETE FROM facts")->execute();
 	}
 
-/*
+/* FUNCTIONS FOR TESTING PURPOSES */
+
+	public function delete(){
+
+		try{
+			$sql = "DELETE FROM cards";			
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+
+		} catch(PDOException $e) {
+			
+			echo $e->getMessage();
+
+		}
+	}
+
 	public function test($id){
 		try{
 			$sql = "SELECT client_id FROM clients 
@@ -685,7 +681,7 @@ class Salem{
 		}
 
 	}
-*/
+
 }
 
 ?>
