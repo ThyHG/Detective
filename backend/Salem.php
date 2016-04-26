@@ -354,6 +354,7 @@ class Salem{
 				$sql = "SELECT client_id FROM clients WHERE client_id != :id";				
 			}
 			
+
 			$stmt = $this->db->prepare($sql);
 			$stmt->bindParam(":id", $id, PDO::PARAM_INT);
 			$stmt->execute();
@@ -402,7 +403,7 @@ class Salem{
 			$this->setCards($id, $cards);
 
 			//return cards
-			return $cards;
+			return $this->getCards($id);
 
 		} catch(PDOException $e) {
 			
