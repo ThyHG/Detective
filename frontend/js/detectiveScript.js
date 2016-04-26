@@ -138,7 +138,6 @@ sendAnswers = function(id, nick) {
 
 //periodically check if the game has launched,
 // if launched, get cards from server.
-// TODO call function every minute or so.
 gameStartCheck = function (id) {
 	console.log('game start check', id)
 	//I suck at planning.
@@ -150,8 +149,8 @@ gameStartCheck = function (id) {
 	    error: function(error) {
 	        //file not exists
 	        console.log('error', error);
-	        //TODO REMOVE ME PLS
-	        window.setTimeout(showCards, 1000)
+	        // TODO this line is for testing without server only.
+	        // window.setTimeout(showCards, 1000)
 	    },
 	    success: function(string) {
 	        if(string === 'online') {
@@ -167,6 +166,8 @@ gameStartCheck = function (id) {
 };
 //Get cards from server
 getCards = function(id) {
+	//if we get here from the moarbutton, hide it.
+	$('#moar-button').hide();
 	console.log('getCards', id);
 	$.ajax({
 		type: 'GET',
@@ -242,7 +243,7 @@ bindCards = function() {
 	var cards = $('.card');
 	for(i=0; i<cards.length; i++) {
 		//If the card is solved, don't render the answers
-		if($(cards[i]).data('solved') !== 'solved'){
+		if(cards[i].dataset.solved !== 'solved'){
 			var input = $('<input type="text" placeholder="This persons\'s ID" class="card-input">');
 	        var button = $('<button class="card-button button-primary" type="button">Check</button>');
 	        button.on('click', function (event){
@@ -251,19 +252,34 @@ bindCards = function() {
 	        	var referenceName = $(this).parent('.card')[0].dataset.nick;
 	        	if(inputValue === referenceValue){
 	        		console.log('You\'re right!');
+	        		//Set the card to solved, additionally give a flag for the congrats text marker.
+	        		$(this).parent('.card')[0].dataset.solved = 'solved';
+	        		$(this).parent('.card')[0].dataset.cong = 'cong';
 	        		// I hate myself
 	        		$(this).siblings('h4').next().html('Congratulations, You have found '+referenceName+'!').nextAll().css('display', 'none');
-	        		//TODO send score to server - blur card
+
+	        		//ID to send to server
 	        		var thisID = $('#cards').data('id');
-	        		console.log(thisID);
+
 	        		$.ajax({
-						type: 'POST',
+						type: 'GET',
+						dataType: 'json',
 						url: '../backend/score.php?id='+thisID+'&t_id='+referenceValue,
 						success: function(msg) {
-							console.log(msg)
+							console.log(msg);
+							//unsolved: How many are still left to guess
+							//count: How many times people requested cards
+							if(msg.count === 1 && msg.unsolved === 0){
+								var moarbutton = $('<button type="button" id="moar-button" class="four offset-by-four columns button-primary">Get more cards</button>');
+								moarbutton.on('click', function (e){
+									getCards(thisID);
+								});
+								moarbutton.appendTo($('#cards'))
+							}
+
 						}
 					}).fail( function (error) {
-						console.log('error', error, error.url)
+						console.log('error', error)
 					});
 	        	} else {
 	        		console.log('wrong guess');
@@ -274,8 +290,9 @@ bindCards = function() {
 	        })
 	        input.appendTo(cards[i]);
 	        button.appendTo(cards[i]);
-	    } else {
-	    	//Replace congratulatory text.
+	    } else if (cards[i].dataset.cong !== 'cong'){
+	    	//enter congratulatory text ONLY if it doesn't have it.
+	    	// This will in theory only happen on a reconnect, where new cards are formed from the server
         	var referenceName = $(cards[i]).data('nick');
 	    	var solvedText = $('<p>Congratulations, You have found '+ referenceName +'!</p>');
 	    	solvedText.appendTo(cards[i]);
