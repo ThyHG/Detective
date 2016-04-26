@@ -34,7 +34,8 @@ class Salem{
 					id INTEGER PRIMARY KEY AUTOINCREMENT, 
 					client_id INTEGER,
 					nick TEXT,
-					score INTEGER)"
+					score INTEGER,
+					requests INTEGER)"
 				);
 
 				//facts table
@@ -216,7 +217,7 @@ class Salem{
 		try{
 
 			//insert new entry
-			$sql = "INSERT INTO clients (client_id, nick, score) VALUES (:id, :nick, 0)";
+			$sql = "INSERT INTO clients (client_id, nick, score, requests) VALUES (:id, :nick, 0, 0)";
 			$stmt = $this->db->prepare($sql);
 
 			//bind param
@@ -409,6 +410,7 @@ class Salem{
 
 	/**
 	 * saves generated cards associated with owner_id into db
+	 * updates request counter, i.e. when new cards have been made +1
 	 *
 	 * @param $owner_id		id of client who owns the card
 	 * @param $cards		contains the cards owner_id client has to look for
@@ -444,11 +446,16 @@ class Salem{
 
 			}
 
+			//update requests counter
+			$sql = "UPDATE clients SET requests = requests+1 WHERE client_id = :id";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindParam(":id", $owner_id, PDO::PARAM_INT);
+			$stmt->execute();
+
 			//commit transaction
 			$this->db->commit();
 
 		} catch(PDOException $e) {
-			
 			echo $e->getMessage();
 
 		}
@@ -520,6 +527,18 @@ class Salem{
 
 	}
 
+	/**
+	 *	returns the number of requests which have been made
+	 */
+	public function getRequests($id){
+		$sql = "SELECT requests FROM clients WHERE client_id = :id";
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindParam(":id", $id, PDO::PARAM_INT);		
+		$stmt->execute();
+
+		return $stmt->fetch(PDO::FETCH_COLUMN);
+	}
+
 	//for debugging
 	public function getAllCards(){
 		try{
@@ -572,6 +591,8 @@ class Salem{
 	 * @param id			id of client who scored a point
 	 * @param target_id		id of client who was identified
 	 * @param points		how many points to add, default 1
+	 *
+	 * @return data			returns request count + if client has unsolved cards
 	 */
 	public function setScore($id, $target_id, $points = 1){
 
@@ -590,6 +611,14 @@ class Salem{
 			$stmt->bindParam(":id", $id, PDO::PARAM_INT);
 			$stmt->bindParam(":t_id", $target_id, PDO::PARAM_INT);
 			$stmt->execute();
+
+			//count how many requests were made ()
+			$data["count"] = $this->getRequests($id);
+
+			//has unsolved? 1 = yes, 0 = false
+			$data["unsolved"] = $this->hasUnsolved($id) ? 1 : 0;
+
+			return $data;
 
 		} catch(PDOException $e) {
 			
@@ -622,6 +651,10 @@ class Salem{
 
 	}
 
+	public function trackRequest($id){
+
+	}
+
 	/**
 	 * deletes all data
 	 */
@@ -631,6 +664,7 @@ class Salem{
 		$this->db->prepare("DELETE FROM facts")->execute();
 	}
 
+/*
 	public function test($id){
 		try{
 			$sql = "SELECT client_id FROM clients 
@@ -651,6 +685,7 @@ class Salem{
 		}
 
 	}
+*/
 }
 
 ?>

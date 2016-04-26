@@ -8,8 +8,6 @@ $salem = new Salem();
 
 //read pool of cards, save who has gotten what
 
-//TODO: mark cards as solved? (for reconnection cases)
-
 //check if ID is being sent
 if( isset($_GET["id"]) ){
 
