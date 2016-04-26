@@ -272,6 +272,7 @@ bindCards = function() {
 							if(msg.count === 1 && msg.unsolved === 0){
 								var moarbutton = $('<button type="button" id="moar-button" class="four offset-by-four columns button-primary">Get more cards</button>');
 								moarbutton.on('click', function (e){
+									$('#cards').children('.card').remove();
 									getCards(thisID);
 								});
 								moarbutton.appendTo($('#cards'))
