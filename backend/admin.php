@@ -1,8 +1,9 @@
 <?php
 
-//header("Refresh:3; url=admin.php");
+header("Refresh:3; url=admin.php");
 
 require "Salem.php";
+$salem = new Salem();
 
 //create folder structure  if it doesn't exist
 if( !file_exists("server.json") ){
@@ -33,8 +34,8 @@ $server = json_decode( file_get_contents("server.json") );
 //game status, true = running, false = offline
 $game_running = strcmp($server->status, "online") == 0 ? true : false;
 
-//TODO
-$player_count = 1337;
+//player count
+$player_count = $salem->countPlayers();
 
 //for msgs
 $notice = "";
@@ -42,9 +43,6 @@ $notice = "";
 if(isset($_GET["start"])){
 
 	if(!$game_running){
-
-		//initialize db
-		$salem = new Salem();
 
 		//change server info to online
 		$server->status = "online";
@@ -65,7 +63,6 @@ if(isset($_GET["start"])){
 } elseif(isset($_GET["stop"]) && $game_running){
 
 	//drop all data
-	$salem = new Salem();
 	$salem->reset();
 
 	//change server info to offline

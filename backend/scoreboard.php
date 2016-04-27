@@ -22,7 +22,7 @@ $scores = $salem->getScores();
 
   	<style>
 
-	  	td{ font-size: 5em; }
+	  	td{ font-size: 2.5em; }
 		h3{ text-align: center; }
 		
   	</style>

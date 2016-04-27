@@ -3,6 +3,7 @@
 	<title>Admin Panel</title>
 
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,600' rel='stylesheet' type='text/css'>
+	
 	<style>
 		*{ font-family: "open sans"; }
 		a{ color: #007396; text-decoration: none; font-weight: bold; }
