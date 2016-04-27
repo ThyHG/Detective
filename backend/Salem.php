@@ -293,6 +293,27 @@ class Salem{
 	}
 
 	/**
+	 * returns number of players
+	 *
+	 * @return int		number
+	 */
+	public function countPlayers(){
+
+		try{
+			$sql = "SELECT COUNT(*) FROM clients"; 
+			//$stmt = $this->db->prepare($sql);
+			$stmt = $this->db->query($sql);
+
+			return $stmt->fetchColumn();
+
+		} catch(PDOException $e) {
+			
+			echo $e->getMessage();
+
+		}
+	}
+
+	/**
 	 * checks if client with given id owns any cards
 	 *
 	 * @param $id	id to check
@@ -338,7 +359,7 @@ class Salem{
 			$sql = "";
 
 			//if request limit has been reached, return old cards only
-			if( intval($this->getRequests) == 2){
+			if( intval($this->getRequests($id)) == 2){
 				return $this->getCards($id);
 			}
 
