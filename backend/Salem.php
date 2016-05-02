@@ -358,11 +358,6 @@ class Salem{
 			
 			$sql = "";
 
-			//if request limit has been reached, return old cards only
-			if( intval($this->getRequests($id)) == 2){
-				return $this->getCards($id);
-			}
-
 			if($more){
 
 				//fetch ids of every other player except own
@@ -642,7 +637,7 @@ class Salem{
 			$stmt->execute();
 
 			//count how many requests were made ()
-			$data["count"] = intval( $this->getRequests($id) );
+			//$data["count"] = intval( $this->getRequests($id) );
 
 			//has unsolved? 1 = yes, 0 = false
 			$data["unsolved"] = $this->hasUnsolved($id) ? 1 : 0;
