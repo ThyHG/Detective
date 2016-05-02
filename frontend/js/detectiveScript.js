@@ -282,7 +282,7 @@ bindCards = function() {
 									$('#cards').children('.card').remove();
 									getCards(thisID);
 								});
-								moarbutton.appendTo($('#cards'))
+								moarbutton.appendTo($('#cards'));
 							}
 
 						}
@@ -291,6 +291,15 @@ bindCards = function() {
 					});
 	        	} else {
 	        		console.log('wrong guess');
+	        		var thisID = $('#cards').data('id');
+	        		$.ajax({
+						type: 'POST',
+						url: '../backend/score.php?id='+thisID+'&fail',
+						success: function(msg){
+							console.log(msg)
+						}).fail( function (error){
+							console.log('error ', error);
+						});
 	        		//I hate myself
 	        		$(this).prev('.card-input').val('').attr('placeholder', 'Wrong guess!').css('border', '1px solid red');
 	        		//TODO make a sad face, lock the card for a minute?
