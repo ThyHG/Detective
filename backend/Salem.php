@@ -54,6 +54,16 @@ class Salem{
 					fact_id INTEGER,
 					fact TEXT,
 					status INTEGER)"
+				);
+
+				//logging
+				$this->db->exec(
+				"CREATE TABLE IF NOT EXISTS logging (
+					id INTEGER PRIMARY KEY AUTOINCREMENT, 
+					client_id INTEGER,
+					target_id INTEGER DEFAULT 0,
+					event TEXT,
+					time TEXT)"
 				);	
 
 			} else{
@@ -344,6 +354,7 @@ class Salem{
 
 	/**
 	 * generates x amount of cards
+	 * if not enough (unique) data, it will return empty
 	 *
 	 * @param $id		id of requestor i.e. making sure not to pick own fact
 	 * @param $amount	how many cards
@@ -682,6 +693,90 @@ class Salem{
 		$this->db->prepare("DELETE FROM clients")->execute();
 		$this->db->prepare("DELETE FROM cards")->execute();
 		$this->db->prepare("DELETE FROM facts")->execute();
+	}
+
+	/**
+	 * logs events
+	 *
+	 * @param id		id of client triggering event
+	 * @param event		description of event (e.g. success, fail)
+	 * @param t_id		optional: target id if success
+	 */
+	public function log($id, $event, $t_id = -1){
+		
+		date_default_timezone_set("Europe/Stockholm"); 
+
+		//add time of server start
+		$time = date("H:i:s");
+
+		try{
+
+			//insert new entry
+			$sql = "INSERT INTO logging (client_id, target_id, event, time) VALUES (:id, :t_id, :event, :time)";
+			$stmt = $this->db->prepare($sql);
+
+			//bind param
+			$stmt->bindParam(":id", $id, PDO::PARAM_INT);
+			$stmt->bindParam(":t_id", $t_id, PDO::PARAM_INT);
+			$stmt->bindParam(":event", $event);
+			$stmt->bindParam(":time", $time);
+
+			//execute
+			$stmt->execute();
+
+		} catch(PDOException $e) {
+			
+			echo $e->getMessage();
+
+		}
+
+	}
+
+	/**
+	 * returns the log
+	 * 
+	 * @param toFile	saves log to file if true
+	 * @return html table
+	 */
+	public function getLog($toFile = false){
+		
+		try{
+
+			//read scores
+			$sql = "SELECT client_id, target_id, event, time FROM logging ORDER BY client_id ASC";
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+
+			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			$table = "<table>
+						<tr>
+							<th>Player</th>
+							<th>Target</th>
+							<th>Type</th>
+							<th>Time</th>
+						</tr>
+					";
+
+			foreach($data as $d){
+				$table .= "<tr>";
+					$table .= "<td>".$d["client_id"]."</td>";
+					$table .= "<td>".$d["target_id"]."</td>";
+					$table .= "<td>".$d["event"]."</td>";
+					$table .= "<td>".$d["time"]."</td>";
+				$table .= "</tr>";
+			}
+
+			$table .= "</table>";
+
+			return $table;
+
+		} catch(PDOException $e) {
+			
+			echo $e->getMessage();
+
+		}
+
 	}
 
 //////////////////////////////////
