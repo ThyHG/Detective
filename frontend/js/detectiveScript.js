@@ -149,6 +149,7 @@ gameStartCheck = function (id) {
 	    error: function(error) {
 	        //file not exists
 	        console.log('error', error);
+	        window.setTimeout(gameStartCheck.bind(null, id), 40000);
 	        // TODO this line is for testing without server only.
 	        // window.setTimeout(showCards, 1000)
 	    },
@@ -267,11 +268,17 @@ bindCards = function() {
 						url: '../backend/score.php?id='+thisID+'&t_id='+referenceValue,
 						success: function(msg) {
 							console.log(msg);
+
 							//unsolved: How many are still left to guess
-							//count: How many times people requested cards
-							if(msg.count === 1 && msg.unsolved === 0){
+							if(msg.unsolved === 0){
+								//This is a hack, the button otherwise appears above the cards.
+								//Fixing the duplicate cards bug would solve this problem.
+								if($('#moar-button').length === 1){
+									$('#cards').children('#moar-button').remove()
+								}
 								var moarbutton = $('<button type="button" id="moar-button" class="four offset-by-four columns button-primary">Get more cards</button>');
 								moarbutton.on('click', function (e){
+									//removing all old cards, just appending the new ones caused some browsers to let things appear double.
 									$('#cards').children('.card').remove();
 									getCards(thisID);
 								});
