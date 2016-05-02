@@ -28,6 +28,10 @@
 			<td><?=$player_count ?></td>
 		</tr>
 		<tr>
+			<td>Start time</td>
+			<td><?=$start_time ?></td>
+		</tr>
+		<tr>
 			<td><a href="admin.php?start">Start game</td>
 			<td><a href="admin.php?stop">Stop game</td>
 		</tr>

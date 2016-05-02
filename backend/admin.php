@@ -21,7 +21,8 @@ if( !file_exists("server.json") ){
     	"status" => $status,
     	"questions_per_player" => $questions_per_player,
     	"cards_per_player" => $cards_per_player,
-    	"facts_per_card" => $facts_per_card
+    	"facts_per_card" => $facts_per_card,
+    	"start_time" => "not started"
     ];
 
     //save to file
@@ -37,6 +38,9 @@ $game_running = strcmp($server->status, "online") == 0 ? true : false;
 //player count
 $player_count = $salem->countPlayers();
 
+//start time
+$start_time = $server->start_time;
+
 //for msgs
 $notice = "";
 
@@ -46,6 +50,11 @@ if(isset($_GET["start"])){
 
 		//change server info to online
 		$server->status = "online";
+
+		date_default_timezone_set("Europe/Stockholm"); 
+
+		//add time of server start
+		$server->start_time = date("d. F H:i:s");
 
 		//save changes to server file
 		file_put_contents( "server.json", json_encode($server, JSON_PRETTY_PRINT) );
@@ -67,6 +76,9 @@ if(isset($_GET["start"])){
 
 	//change server info to offline
 	$server->status = "offline";
+	$server->start_time = "not started";
+
+	//SAVE LOG AND EVERYTHING GAME START TIME TO FILE
 
 	//save changes to server file
 	file_put_contents( "server.json", json_encode($server, JSON_PRETTY_PRINT) );
