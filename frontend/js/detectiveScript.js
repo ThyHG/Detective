@@ -6,6 +6,7 @@ var fake_questionnairre = {
 	'q5': 'What\'s the purpose of life?'
 }
 
+var fourDigidCodes = ['0120','1811','8338','5842','4756','5063','7454','7758','8300','1858','5903','5831','6930','7085','2113','1196','4787','5450','3070','1798','0054','3469','1402','9985','9061'];
 var fake_cards = [
 	{
 		'id': '1',
@@ -49,7 +50,9 @@ $(document).ready(function() {
 	$('#enter-id').on('click', function(event){
 		var id = $('input[name=code-insert]').val();
 		var nick = $('input[name=name-insert]').val();
-		getQuestions(id, nick);
+		// if($.inArray(id, fourDigidCodes) > -1){
+			getQuestions(id, nick);
+		// }
 	})
 	
 });
@@ -251,6 +254,8 @@ bindCards = function() {
 	        	var inputValue = $(this).siblings('.card-input').val();
 	        	var referenceValue = $(this).parent('.card')[0].dataset.id;
 	        	var referenceName = $(this).parent('.card')[0].dataset.nick;
+        		//ID to send to server
+        		var thisID = $('#cards').data('id');
 	        	if(inputValue === referenceValue){
 	        		console.log('You\'re right!');
 	        		//Set the card to solved, additionally give a flag for the congrats text marker.
@@ -258,9 +263,6 @@ bindCards = function() {
 	        		$(this).parent('.card')[0].dataset.cong = 'cong';
 	        		// I hate myself
 	        		$(this).siblings('h4').next().html('Congratulations, You have found '+referenceName+'!').nextAll().css('display', 'none');
-
-	        		//ID to send to server
-	        		var thisID = $('#cards').data('id');
 
 	        		$.ajax({
 						type: 'GET',
@@ -291,20 +293,20 @@ bindCards = function() {
 					});
 	        	} else {
 	        		console.log('wrong guess');
-	        		var thisID = $('#cards').data('id');
 	        		$.ajax({
 						type: 'POST',
 						url: '../backend/score.php?id='+thisID+'&fail',
 						success: function(msg){
 							console.log(msg)
-						}).fail( function (error){
-							console.log('error ', error);
-						});
+						}
+					}).fail(function (error){
+						console.log('error ', error)
+					});
 	        		//I hate myself
 	        		$(this).prev('.card-input').val('').attr('placeholder', 'Wrong guess!').css('border', '1px solid red');
 	        		//TODO make a sad face, lock the card for a minute?
-	        	}
-	        })
+	        	}	
+	        });
 	        input.appendTo(cards[i]);
 	        button.appendTo(cards[i]);
 	    } else if (cards[i].dataset.cong !== 'cong'){
