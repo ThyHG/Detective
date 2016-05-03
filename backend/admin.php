@@ -6,6 +6,10 @@ require "Salem.php";
 $salem = new Salem();
 
 //create folder structure  if it doesn't exist
+if( !file_exists("log") ){
+	mkdir("log");
+}
+
 if( !file_exists("server.json") ){
     
 	//create file
@@ -69,7 +73,20 @@ if(isset($_GET["start"])){
 
 	}
 	
+} elseif( isset($_GET["log"]) ){
+
+	$salem->saveLog($start_time);
+	$salem->saveScores();
+
+} elseif( isset($_GET["logint"]) ){
+
+	$salem->saveInteractionLog();
+
 } elseif(isset($_GET["stop"]) && $game_running){
+
+	//save log
+	$salem->saveLog($start_time);
+	$salem->saveScores();
 
 	//drop all data
 	$salem->reset();

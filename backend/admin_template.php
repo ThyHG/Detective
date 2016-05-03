@@ -33,7 +33,11 @@
 		</tr>
 		<tr>
 			<td><a href="admin.php?start">Start game</td>
-			<td><a href="admin.php?stop">Stop game</td>
+			<td><a href="admin.php?stop">Stop game (reset)</td>
+		</tr>
+		<tr>
+			<td><a href="admin.php?log">Save log</td>
+			<td><a href="admin.php?logint">Save interaction log</td>
 		</tr>
 		<tr>
 			<td colspan="2" id="notice"><?=$notice ?></td>

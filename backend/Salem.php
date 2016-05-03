@@ -687,12 +687,56 @@ class Salem{
 	}
 
 	/**
+	 * save scores to file
+	 * 
+	 * @return json		nick, id and its score
+	 */
+	public function saveScores(){
+		
+		try{
+
+			//read scores
+			$sql = "SELECT client_id, nick, score FROM clients ORDER BY score DESC";
+			$stmt = $this->db->prepare($sql);
+			$stmt->execute();
+
+			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			$json = [];
+
+			foreach($data as $d){
+				$json_temp = [];
+				$json_temp["id"] = $d["client_id"];
+				$json_temp["nick"] = $d["nick"];
+				$json_temp["score"] = $d["score"];
+
+				$json[] = $json_temp;
+			}
+
+			date_default_timezone_set("Europe/Stockholm"); 
+
+			//add time of server start
+			$fname = date("Y_m_d_H_i_s");
+
+			//save file
+			file_put_contents("log/scores_".$fname.".json", json_encode($json, JSON_PRETTY_PRINT));
+
+		} catch(PDOException $e) {
+			
+			echo $e->getMessage();
+
+		}
+
+	}
+
+	/**
 	 * deletes all data
 	 */
 	public function reset(){
 		$this->db->prepare("DELETE FROM clients")->execute();
 		$this->db->prepare("DELETE FROM cards")->execute();
 		$this->db->prepare("DELETE FROM facts")->execute();
+		$this->db->prepare("DELETE FROM logging")->execute();
 	}
 
 	/**
@@ -733,12 +777,11 @@ class Salem{
 	}
 
 	/**
-	 * returns the log
+	 * returns the log data
 	 * 
-	 * @param toFile	saves log to file if true
-	 * @return html table
+	 * @return assoc array
 	 */
-	public function getLog($toFile = false){
+	public function getLog(){
 		
 		try{
 
@@ -749,27 +792,7 @@ class Salem{
 
 			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			$table = "<table>
-						<tr>
-							<th>Player</th>
-							<th>Target</th>
-							<th>Type</th>
-							<th>Time</th>
-						</tr>
-					";
-
-			foreach($data as $d){
-				$table .= "<tr>";
-					$table .= "<td>".$d["client_id"]."</td>";
-					$table .= "<td>".$d["target_id"]."</td>";
-					$table .= "<td>".$d["event"]."</td>";
-					$table .= "<td>".$d["time"]."</td>";
-				$table .= "</tr>";
-			}
-
-			$table .= "</table>";
-
-			return $table;
+			return $data;
 
 		} catch(PDOException $e) {
 			
@@ -777,6 +800,91 @@ class Salem{
 
 		}
 
+	}
+
+	/**
+	 * returns the log data in table format
+	 * 
+	 * @return html table
+	 */
+	public function getLogTable(){
+
+		$data = $this->getLog();
+
+		$table = "<table>
+					<tr>
+						<th>Player</th>
+						<th>Target</th>
+						<th>Type</th>
+						<th>Time</th>
+					</tr>
+				";
+
+		foreach($data as $d){
+			$table .= "<tr>";
+				$table .= "<td>".$d["client_id"]."</td>";
+				$table .= "<td>".$d["target_id"]."</td>";
+				$table .= "<td>".$d["event"]."</td>";
+				$table .= "<td>".$d["time"]."</td>";
+			$table .= "</tr>";
+		}
+
+		$table .= "</table>";
+
+		return $table;
+	}
+
+	/**
+	 * save log file in json format
+	 */
+	public function saveLog($game_start_time){
+
+		$data = $this->getLog();
+
+		$json = [];
+		$json["game_start"] = $game_start_time;
+
+		foreach($data as $d){
+			$json_part = [];
+			$json_part["client_id"] = $d["client_id"];
+			$json_part["target_id"] = $d["target_id"];
+			$json_part["event"] = $d["event"];
+			$json_part["time"] = $d["time"];
+			$json[] = $json_part;
+		}
+
+		date_default_timezone_set("Europe/Stockholm"); 
+
+		//add time of server start
+		$fname = date("Y_m_d_H_i_s");
+
+		//save file
+		file_put_contents("log/".$fname.".json", json_encode($json, JSON_PRETTY_PRINT));
+	}
+
+	/**
+	 * save log file in json format
+	 */
+	public function saveInteractionLog(){
+
+		$data = $this->getLog();
+
+		$json = [];
+		
+		foreach($data as $d){
+			$json_part = [];
+			$json_part["client_id"] = $d["client_id"];
+			$json_part["target_id"] = $d["target_id"];
+			$json[] = $json_part;
+		}
+
+		date_default_timezone_set("Europe/Stockholm"); 
+
+		//add time of server start
+		$fname = date("Y_m_d_H_i_s");
+
+		//save file
+		file_put_contents("log/interaction_".$fname.".json", json_encode($json, JSON_PRETTY_PRINT));
 	}
 
 //////////////////////////////////
