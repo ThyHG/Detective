@@ -50,9 +50,11 @@ $(document).ready(function() {
 	$('#enter-id').on('click', function(event){
 		var id = $('input[name=code-insert]').val();
 		var nick = $('input[name=name-insert]').val();
-		// if($.inArray(id, fourDigidCodes) > -1){
+		if($.inArray(id, fourDigidCodes) > -1){
 			getQuestions(id, nick);
-		// }
+		} else {
+			$('input[name=code-insert]').val('').attr('placeholder', 'You might have made a typo in your code').css('border', '1px solid red');
+		}
 	})
 	
 });
