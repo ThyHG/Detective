@@ -1,9 +1,9 @@
 var fake_questionnairre = {
-	'q1': 'Are you healthy?',
-	'q2': 'What is your favourite colour?',
-	'q3': 'How do you know?',
-	'q4': 'Do you like pointless questions?',
-	'q5': 'What\'s the purpose of life?'
+	'q1': 'If you see this something has gone wrong',
+	'q2': 'Please come to us for help',
+	'q3': '.',
+	'q4': '.',
+	'q5': '.'
 }
 
 var fourDigidCodes = ['0120','1811','8338','5842','4756','5063','7454','7758','8300','1858','5903','5831','6930','7085','2113','1196','4787','5450','3070','1798','0054','3469','1402','9985','9061'];
@@ -56,7 +56,7 @@ $(document).ready(function() {
 			$('input[name=code-insert]').val('').attr('placeholder', 'You might have made a typo in your code').css('border', '1px solid red');
 		}
 	})
-	
+
 });
 //Request questions from server, dynamically create questions, buttons and clickhandlers
 getQuestions = function(id, nick) {
@@ -307,7 +307,7 @@ bindCards = function() {
 	        		//I hate myself
 	        		$(this).prev('.card-input').val('').attr('placeholder', 'Wrong guess!').css('border', '1px solid red');
 	        		//TODO make a sad face, lock the card for a minute?
-	        	}	
+	        	}
 	        });
 	        input.appendTo(cards[i]);
 	        button.appendTo(cards[i]);
